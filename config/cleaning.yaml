@@ -1,0 +1,41 @@
+# Cleaning rules (PROJECT_PLAN.md Section 2.1). Each setting has a one-line rationale.
+# The order of steps is fixed in src/churn/clean.py and documented there.
+# Codes were chosen by listing every stock code that is not "5 digits + optional letters"
+# in the raw file (62 such codes) and reading their descriptions; see docs/C1_data_and_cleaning.md.
+
+cancellation_prefix: "C"
+cancellation_prefix_rationale: >-
+  The UCI data description says an invoice number starting with "C" is a cancellation.
+  These lines are kept as returns (netted at customer level), not counted as purchases.
+
+# Matching is exact and case-sensitive, so both "M" and "m" are listed.
+non_product_stock_codes:
+  - {code: POST, reason: "Postage charge"}
+  - {code: DOT, reason: "Dotcom postage charge"}
+  - {code: C2, reason: "Carriage charge"}
+  - {code: M, reason: "Manual adjustment line"}
+  - {code: m, reason: "Manual adjustment line (lower-case variant)"}
+  - {code: D, reason: "Discount line"}
+  - {code: S, reason: "Samples"}
+  - {code: BANK CHARGES, reason: "Bank charges"}
+  - {code: ADJUST, reason: "Manual adjustment by staff"}
+  - {code: ADJUST2, reason: "Manual adjustment by staff"}
+  - {code: AMAZONFEE, reason: "Amazon fee, not a sale"}
+  - {code: B, reason: "Adjust bad debt (accounting entry)"}
+  - {code: CRUK, reason: "Cancer Research UK commission, not a sale"}
+  - {code: TEST001, reason: "Test product"}
+  - {code: TEST002, reason: "Test product"}
+  - {code: GIFT, reason: "Gift voucher, stored value not a product"}
+  - {code: gift_0001_10, reason: "Gift voucher, stored value not a product"}
+  - {code: gift_0001_20, reason: "Gift voucher, stored value not a product"}
+  - {code: gift_0001_30, reason: "Gift voucher, stored value not a product"}
+  - {code: gift_0001_40, reason: "Gift voucher, stored value not a product"}
+  - {code: gift_0001_50, reason: "Gift voucher, stored value not a product"}
+  - {code: gift_0001_60, reason: "Gift voucher, stored value not a product"}
+  - {code: gift_0001_70, reason: "Gift voucher, stored value not a product"}
+  - {code: gift_0001_80, reason: "Gift voucher, stored value not a product"}
+  - {code: gift_0001_90, reason: "Gift voucher, stored value not a product"}
+non_product_stock_codes_rationale: >-
+  Fees, postage, adjustments, discounts, samples, tests and vouchers are not product sales, so
+  they would distort product revenue and purchase behaviour. Codes starting DCGS (dotcom gift
+  shop items), SP1002 and PADS are real products and are kept (PADS: TO VERIFY in NOTES.md).

@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "churn"
+version = "0.1.0"
+description = "Customer churn and retention analytics on UCI Online Retail II"
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = [
+    "realdata: reads the real raw file in data/raw/ (slow; run with: pytest -m realdata)",
+]
+addopts = "-m 'not realdata'"
