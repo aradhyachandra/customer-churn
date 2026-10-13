@@ -1,0 +1,26 @@
+model,setting,threshold_days,pr_auc,roc_auc,precision_top_10pct,precision_top_20pct,preprocessing
+rule,recency_days > 30,30.0000,0.6773,0.6211,0.6848,0.6848,
+rule,recency_days > 45,45.0000,0.6988,0.6546,0.7163,0.7163,
+rule,recency_days > 60,60.0000,0.7113,0.6719,0.7381,0.7381,
+rule,recency_days > 75,75.0000,0.7237,0.6876,0.7619,0.7619,
+rule,recency_days > 90,90.0000,0.7277,0.6912,0.7744,0.7744,
+rule,recency_days > 105,105.0000,0.7313,0.6940,0.7875,0.7875,
+rule,recency_days > 120,120.0000,0.7322,0.6936,0.7948,0.7948,
+rule,recency_days > 150,150.0000,0.7277,0.6830,0.8089,0.8089,
+rule,recency_days > 180,180.0000,0.7004,0.6356,0.8316,0.8316,
+rule,recency_days > 240,240.0000,0.6566,0.5664,0.8459,0.7587,
+logistic,standardise_only,,0.8208,0.7752,0.8958,0.8877,standardise_only
+logistic,log_signed_log,,0.8258,0.7866,0.8912,0.8669,log_signed_log
+logistic,log_clip,,0.8250,0.7859,0.9028,0.8588,log_clip
+gbm,"learning_rate=0.03, max_leaf_nodes=8, min_samples_leaf=20",,0.8286,0.7873,0.8912,0.8843,
+gbm,"learning_rate=0.03, max_leaf_nodes=8, min_samples_leaf=100",,0.8315,0.7894,0.8958,0.8796,
+gbm,"learning_rate=0.03, max_leaf_nodes=8, min_samples_leaf=300",,0.8313,0.7886,0.8889,0.8785,
+gbm,"learning_rate=0.03, max_leaf_nodes=31, min_samples_leaf=20",,0.8201,0.7787,0.8796,0.8646,
+gbm,"learning_rate=0.03, max_leaf_nodes=31, min_samples_leaf=100",,0.8228,0.7818,0.8773,0.8519,
+gbm,"learning_rate=0.03, max_leaf_nodes=31, min_samples_leaf=300",,0.8288,0.7855,0.8819,0.8773,
+gbm,"learning_rate=0.1, max_leaf_nodes=8, min_samples_leaf=20",,0.8198,0.7802,0.8727,0.8669,
+gbm,"learning_rate=0.1, max_leaf_nodes=8, min_samples_leaf=100",,0.8176,0.7807,0.8611,0.8484,
+gbm,"learning_rate=0.1, max_leaf_nodes=8, min_samples_leaf=300",,0.8161,0.7822,0.8588,0.8530,
+gbm,"learning_rate=0.1, max_leaf_nodes=31, min_samples_leaf=20",,0.8049,0.7632,0.8634,0.8391,
+gbm,"learning_rate=0.1, max_leaf_nodes=31, min_samples_leaf=100",,0.8095,0.7670,0.8657,0.8495,
+gbm,"learning_rate=0.1, max_leaf_nodes=31, min_samples_leaf=300",,0.8145,0.7737,0.8681,0.8565,

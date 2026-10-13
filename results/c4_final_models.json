@@ -1,0 +1,75 @@
+{
+  "generated_at": "2026-10-13T16:30:26+00:00",
+  "git": {
+    "commit": "cfc6b97adb307dfa3edfa1451bd2e0069be2e1c3",
+    "uncommitted_changes": true
+  },
+  "raw_sha256": "bcbe73b35f5b7babf197fb0cb983a11f5d9ff929078d4aa53d171b1f2df2e980",
+  "sklearn_version": "1.9.1",
+  "features": [
+    "recency_days",
+    "orders_90d",
+    "orders_180d",
+    "orders_365d",
+    "net_revenue_90d",
+    "net_revenue_180d",
+    "net_revenue_365d",
+    "avg_order_value_365d",
+    "orders_trend_90d",
+    "net_revenue_trend_90d",
+    "single_purchase_day_365d",
+    "avg_gap_days",
+    "latest_gap_days",
+    "latest_gap_ratio",
+    "recency_gap_ratio",
+    "tenure_days",
+    "first_seen_first_data_month",
+    "distinct_products_365d",
+    "return_rate_365d",
+    "is_uk",
+    "bought_in_peak_365d"
+  ],
+  "selected": {
+    "rule": {
+      "threshold_days": 120
+    },
+    "logistic": {
+      "preprocessing": "log_signed_log"
+    },
+    "gbm": {
+      "params": {
+        "learning_rate": 0.03,
+        "max_leaf_nodes": 8,
+        "min_samples_leaf": 100
+      }
+    }
+  },
+  "training_cutoffs": [
+    "2010-12-01",
+    "2011-01-01",
+    "2011-02-01",
+    "2011-03-01",
+    "2011-04-01",
+    "2011-05-01"
+  ],
+  "training_rows": {
+    "customers": 25547,
+    "churners": 16425,
+    "churn_rate": 0.6429326339687634
+  },
+  "models_dir": "data/processed/models",
+  "models": {
+    "rule": {
+      "file": "rule.joblib",
+      "sha256": "fb4b20b2141e5ae03cda465c77e86319369f4add32b0727ce9cc1b978ea1b1b2"
+    },
+    "logistic": {
+      "file": "logistic.joblib",
+      "sha256": "ee966a7b80f743b1064b7cb2e79edc7447b583a97dc4e93cf9d53894fd3b3c22"
+    },
+    "gbm": {
+      "file": "gbm.joblib",
+      "sha256": "2dfb635d852d480ad6c617432bea012d0d85285847b0affa3a0dcfe52a3ff146"
+    }
+  }
+}

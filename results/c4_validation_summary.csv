@@ -1,0 +1,4 @@
+model,label,customers,churners,base_rate,roc_auc,pr_auc,brier,mean_predicted,top10_k,top10_churners,top10_precision,top10_recall,top20_k,top20_churners,top20_precision,top20_recall,roc_auc_low,roc_auc_high,pr_auc_low,pr_auc_high,precision_top_10pct_low,precision_top_10pct_high,precision_top_20pct_low,precision_top_20pct_high
+rule,Rule (rank by recency),4317,2647,0.6132,0.7378,0.7937,,,432,364,0.8426,0.1375,864,727.2727,0.8418,0.2748,0.7229,0.7531,0.7755,0.8119,0.8101,0.8781,0.8165,0.8658
+logistic,Logistic regression,4317,2647,0.6132,0.7866,0.8258,0.1879,0.7189,432,385,0.8912,0.1454,864,749.0000,0.8669,0.2830,0.7726,0.8009,0.8090,0.8426,0.8634,0.9213,0.8426,0.8900
+gbm,Gradient boosting,4317,2647,0.6132,0.7894,0.8315,0.1813,0.6915,432,387,0.8958,0.1462,864,760.0000,0.8796,0.2871,0.7759,0.8035,0.8161,0.8482,0.8704,0.9282,0.8588,0.9016

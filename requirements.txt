@@ -1,10 +1,13 @@
 # Pinned with Python 3.13.5 (pip freeze, 2026-10-13). Install: pip install -r requirements.txt && pip install -e .
+cloudpickle==3.1.2
 contourpy==1.4.0
 cycler==0.12.1
 fonttools==4.66.1
 iniconfig==2.3.1
+joblib==1.6.0
 kiwisolver==1.5.1
 matplotlib==3.11.2
+narwhals==2.27.1
 numpy==2.5.4
 packaging==26.3
 pandas==3.0.6
@@ -17,4 +20,7 @@ pytest==9.1.1
 python-calamine==0.8.3
 python-dateutil==2.9.0.post0
 PyYAML==6.0.3
+scikit-learn==1.9.1
+scipy==1.18.1
 six==1.17.0
+threadpoolctl==3.7.0

@@ -1,6 +1,6 @@
 # Progress
 
-## C1: Repo setup, loading, cleaning (done 2026-10-13, awaiting review, not committed)
+## C1: Repo setup, loading, cleaning (done 2026-10-13, committed c8a14e4)
 
 Built:
 - Skeleton: `src/churn/`, `tests/`, `config/`, `docs/`, `data/raw/` and `data/processed/` and
@@ -71,7 +71,7 @@ How to run:
 Decided after review: training cutoffs run monthly 2010-12-01..2011-05-01 (config/churn.yaml).
 Open items: see NOTES.md (TO VERIFY).
 
-## C3: Snapshot builder, features, labels (done 2026-10-13, awaiting review, not committed)
+## C3: Snapshot builder, features, labels (done 2026-10-13, committed cfc6b97)
 
 Built:
 - `config/features.yaml`: frequency windows (90/180/365), trend window (90), stock-code
@@ -105,4 +105,51 @@ How to run:
 
 Open items: see NOTES.md (TO VERIFY).
 
-## Next: C4 (baselines + main model, out-of-time test)
+## C4 part A: Models and validation (done 2026-10-13, reviewed and committed)
+
+Built:
+- `config/model.yaml`: seed, validation cutoff 2011-05-01, tuning gap rule, selection metric
+  (PR-AUC), rule thresholds, logistic preprocessing options and per-feature transforms, logistic
+  settings, boosting fixed settings and 12-setting grid, top fractions, calibration bins,
+  bootstrap samples. Each has a rationale (tested).
+- `src/churn/metrics.py`: ROC-AUC, PR-AUC, precision/recall in the top 10%/20% with counts (ties
+  share places), Brier, 10-bin calibration table, mean predicted, base rate, 1,000-sample
+  bootstrap 95% intervals for AUC, PR-AUC and precision@10/20%.
+- `src/churn/models.py`: validation split (tuning cutoffs 2010-12-01 and 2011-01-01),
+  `load_snapshots` (refuses the test cutoff), recency rule, logistic preprocessor (log1p, signed
+  log or clipping, standardising; fitted on training rows only), boosting, tuning, final refit,
+  model save/load with sha256 check.
+- `src/churn/run_c4.py`: tunes, reports validation metrics, refits on all 6 training cutoffs,
+  saves models and the frozen manifest, renders `docs/C4_models.md` from
+  `docs/templates/C4_models.md` (test section left marked NOT RUN YET).
+- `src/churn/run_c4_test.py`: the one-shot test run for part B. Tested on fixtures only; NOT run.
+- `src/churn/plots.py`: calibration plot.
+- `requirements.txt`: scikit-learn 1.9.1 and its dependencies pinned.
+
+Outputs (committable): `results/c4_validation_metrics.json`, `results/c4_validation_summary.csv`,
+`results/c4_validation_tuning.csv`, `results/c4_validation_calibration.csv`,
+`results/c4_final_models.json` (frozen manifest), `results/figures/c4_validation_calibration.png`.
+Gitignored: `data/processed/models/{rule,logistic,gbm}.joblib`. Run: about 17 s, 0.26 GB peak.
+
+Review change (2026-10-13, before any test run): the rule now ranks by `recency_days` (validation
+PR-AUC 0.794, was 0.732 as a yes/no score); `recency_days > 120` is kept as a reported yes/no flag.
+
+Chosen settings: rule flag `recency_days > 120`; logistic `log_signed_log`; boosting
+`learning_rate=0.03, max_leaf_nodes=8, min_samples_leaf=100` (all in docs/C4_models.md).
+
+Tests: 143 unit tests (`pytest`; new: tests/test_metrics.py, tests/test_models.py,
+tests/test_run_c4_test.py, one plot test), 12 real-data checks (`pytest -m realdata`; new:
+tests/test_real_data_c4.py). All pass. The test cutoff (2011-09-01) was not read or scored.
+
+How to run:
+```bash
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python -m churn.run_c4
+.venv/bin/python -m pytest && .venv/bin/python -m pytest -m realdata
+```
+
+Open items: see NOTES.md (TO VERIFY, C4 entries).
+
+## Next: C4 part B (after review and commit of part A)
+Run `python -m churn.run_c4_test` once from a clean committed tree, then fill the test section of
+`docs/C4_models.md` from `results/c4_test_metrics.json`.

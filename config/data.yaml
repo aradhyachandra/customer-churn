@@ -35,3 +35,14 @@ paths:
   c3_feature_summary: results/c3_feature_summary_training.csv
   c3_doc_template: docs/templates/C3_snapshots_and_features.md
   c3_doc_output: docs/C3_snapshots_and_features.md
+  # C4 outputs (fitted models stay in data/processed/; the manifest, metrics and figure are committed)
+  models_dir: data/processed/models                          # rule/logistic/gbm.joblib
+  c4_final_models: results/c4_final_models.json              # frozen settings + model sha256
+  c4_validation_metrics: results/c4_validation_metrics.json
+  c4_validation_summary: results/c4_validation_summary.csv
+  c4_validation_tuning: results/c4_validation_tuning.csv
+  c4_validation_calibration: results/c4_validation_calibration.csv
+  c4_calibration_plot: results/figures/c4_validation_calibration.png
+  c4_test_metrics: results/c4_test_metrics.json              # written once by run_c4_test (part B)
+  c4_doc_template: docs/templates/C4_models.md
+  c4_doc_output: docs/C4_models.md

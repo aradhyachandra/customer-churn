@@ -74,3 +74,50 @@ def retention_heatmap(rates, sizes, path, flagged_cohort=None, partial_month=Non
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path, bbox_inches="tight")
     plt.close(fig)
+
+
+# Categorical slots 1 and 2 of the reference palette (blue, orange), in fixed order.
+SERIES = ["#2a78d6", "#eb6834"]
+
+
+def calibration_plot(tables, path, title):
+    """Reliability diagram: mean predicted probability vs observed churn rate per bin, one line per
+    model (tables: {label: calibration_table rows}), with customers per bin in a panel below."""
+    fig, (ax, ax_n) = plt.subplots(2, 1, figsize=(7.5, 8), dpi=150, sharex=True,
+                                   gridspec_kw={"height_ratios": [3, 1], "hspace": 0.08})
+    ax.plot([0, 1], [0, 1], color=MUTED, linewidth=1, linestyle="--", zorder=1)
+    ax.text(0.30, 0.33, "perfect calibration", rotation=45, ha="left", va="bottom", fontsize=7.5,
+            color=MUTED, rotation_mode="anchor")
+    width = 0.1 / (len(tables) + 1)
+    for i, (label, rows) in enumerate(tables.items()):
+        filled = [r for r in rows if r["customers"]]
+        x = [r["mean_predicted"] for r in filled]
+        y = [r["observed_churn_rate"] for r in filled]
+        ax.plot(x, y, color=SERIES[i], linewidth=2, marker="o", markersize=6,
+                markeredgecolor="white", markeredgewidth=1.5, label=label, zorder=2 + i)
+        centres = [r["lower"] + (i + 1) * width for r in rows]
+        ax_n.bar(centres, [r["customers"] for r in rows], width=width * 0.9, color=SERIES[i])
+
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.set_ylabel("Observed churn rate", fontsize=9, color=INK)
+    ax.set_title(title, fontsize=12, color=INK, loc="left", pad=10)
+    ax.legend(frameon=False, fontsize=8.5, loc="upper left", labelcolor=INK)
+    ax_n.set_ylabel("Customers", fontsize=9, color=INK)
+    ax_n.set_xlabel("Predicted churn probability (10 equal-width bins)", fontsize=9, color=INK)
+    for a in (ax, ax_n):
+        a.grid(color="#e6e6e3", linewidth=0.8)
+        a.set_axisbelow(True)
+        a.tick_params(labelsize=8, colors=INK, length=0)
+        for side in ("top", "right"):
+            a.spines[side].set_visible(False)
+        for side in ("left", "bottom"):
+            a.spines[side].set_color("#c9c9c4")
+    ax.yaxis.set_major_formatter(lambda v, _: f"{v:.0%}")
+    ax_n.xaxis.set_major_formatter(lambda v, _: f"{v:.0%}")
+    ax_n.set_xticks(np.linspace(0, 1, 11))
+
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path, bbox_inches="tight")
+    plt.close(fig)

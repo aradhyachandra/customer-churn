@@ -1,0 +1,104 @@
+# Models and validation (PROJECT_PLAN.md Section 5). Each setting has a one-line rationale.
+# Training cutoffs, horizon and test cutoff come from config/churn.yaml.
+
+seed: 20111201
+seed_rationale: >-
+  One fixed seed for every random step (gradient boosting, bootstrap), so reruns give the same
+  models and intervals. The value itself carries no meaning.
+
+validation_cutoff: "2011-05-01"
+validation_cutoff_rationale: >-
+  The last training cutoff. Tuning mimics the test: models are fitted on earlier cutoffs and scored
+  on a later one they never saw. The test cutoff (2011-09-01) is never read during tuning.
+
+tuning_gap_rule: label_window_ends_on_or_before_validation_cutoff
+tuning_gap_rule_rationale: >-
+  The same gap rule as the test: a training cutoff is used for tuning only when its 90-day outcome
+  window ends on or before the validation cutoff, so no tuning label overlaps the validation
+  period. With monthly cutoffs from 2010-12-01 this leaves 2010-12-01 (window ends 2011-03-01) and
+  2011-01-01 (ends 2011-04-01); 2011-02-01 ends 2011-05-02 and is excluded. Customers repeat
+  across cutoffs, which a time split handles honestly (the test has the same overlap).
+
+selection_metric: pr_auc
+selection_metric_rationale: >-
+  PR-AUC (average precision) on the validation cutoff picks the rule threshold, the logistic
+  preprocessing and the gradient boosting settings. It rewards ranking churners at the top, which
+  is how the scores are used (contact the riskiest customers first).
+
+final_training: all_training_cutoffs
+final_training_rationale: >-
+  After selection, the chosen settings are refitted on all 6 training cutoffs (2010-12-01 to
+  2011-05-01), whose outcome windows all end before the test cutoff. These frozen models are the
+  only ones scored on the test cutoff, once.
+
+rule_thresholds_days: [30, 45, 60, 75, 90, 105, 120, 150, 180, 240]
+rule_thresholds_days_rationale: >-
+  The rule ranks customers by recency_days (decided by Aradhya after the part A review, 2026-10-13:
+  a yes/no score cannot rank inside its yes group, which made the baseline unfairly weak), so its
+  ranking metrics need no X. X only sets the reported yes/no flag "recency_days > X", chosen by
+  the validation PR-AUC of the 1/0 flag. The grid runs from one month to eight months.
+
+logistic_preprocessing_options: [standardise_only, log_signed_log, log_clip]
+logistic_preprocessing_options_rationale: >-
+  Candidates chosen by validation PR-AUC. standardise_only: no reshaping (a reference).
+  log_signed_log: log1p for skewed non-negative features, sign(x)*log1p(|x|) for features that can
+  be negative. log_clip: log1p for non-negative features, and features that can be negative are
+  clipped at their 1st and 99th training percentiles. All end with standardising. Every fitted
+  value (percentiles, means, standard deviations) comes from training rows only (NOTES.md: heavy
+  tails, e.g. recency_gap_ratio up to 363, negative net revenue).
+
+logistic_clip_percentiles: [1, 99]
+logistic_clip_percentiles_rationale: >-
+  For log_clip: clip at the 1st and 99th percentile of the training rows, a common choice that
+  removes only the extreme 2% without touching the bulk of the data.
+
+logistic_params: {C: 1.0, max_iter: 5000}
+logistic_params_rationale: >-
+  scikit-learn's default L2 strength. With 8,000+ training rows and 21 features regularisation
+  matters little, so only the preprocessing is tuned (keeps the search small). max_iter is high
+  enough for the solver to converge.
+
+feature_transforms:
+  log1p: [recency_days, orders_90d, orders_180d, orders_365d, avg_order_value_365d, avg_gap_days,
+          latest_gap_days, latest_gap_ratio, recency_gap_ratio, tenure_days,
+          distinct_products_365d, return_rate_365d]
+  signed: [net_revenue_90d, net_revenue_180d, net_revenue_365d, orders_trend_90d,
+           net_revenue_trend_90d]
+  binary: [single_purchase_day_365d, first_seen_first_data_month, is_uk, bought_in_peak_365d]
+feature_transforms_rationale: >-
+  Which logistic transform each feature gets. log1p: counts, days, £ averages and ratios that are
+  never negative by definition (a negative value stops the run). signed: net revenue and trends,
+  which can be negative (returns of earlier purchases, falling activity). binary: 0/1 flags, only
+  standardised. Every one of the 21 features appears exactly once (tested).
+
+gbm_fixed_params: {max_iter: 200, early_stopping: false}
+gbm_fixed_params_rationale: >-
+  HistGradientBoostingClassifier with a fixed number of trees and no early stopping: early
+  stopping would carve a random internal validation split out of the training rows, which mixes
+  cutoffs and adds a second source of randomness. Learning rate and tree size control fit instead.
+
+gbm_grid:
+  learning_rate: [0.03, 0.1]
+  max_leaf_nodes: [8, 31]
+  min_samples_leaf: [20, 100, 300]
+gbm_grid_rationale: >-
+  12 settings (2 x 2 x 3), the small grid PROJECT_PLAN.md allows: slow vs normal learning, small vs
+  default trees, and leaf sizes from the default (20) to large (300 of about 8,400 tuning rows),
+  which smooths the fit. Everything else stays at scikit-learn defaults.
+
+top_fractions: [0.10, 0.20]
+top_fractions_rationale: >-
+  PROJECT_PLAN.md Section 5: precision and recall in the top 10% and 20% of scores. The top k is
+  ceil(fraction x customers). Customers tied at the boundary score share the remaining places
+  equally (the average over random tie-breaks), so results never depend on row order.
+
+calibration_bins: 10
+calibration_bins_rationale: >-
+  10 equal-width probability bins (0-0.1, ..., 0.9-1.0) for the calibration table and plot; empty
+  bins are kept with a count of 0.
+
+bootstrap_samples: 1000
+bootstrap_samples_rationale: >-
+  1,000 resamples of the scored customers (with replacement) give 95% percentile intervals for
+  ROC-AUC, PR-AUC and precision@10/20%. Customers are unique within one cutoff, so rows are resampled
+  directly. The intervals show sampling noise only, not the choice of cutoff.
