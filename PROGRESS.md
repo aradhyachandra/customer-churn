@@ -71,4 +71,38 @@ How to run:
 Decided after review: training cutoffs run monthly 2010-12-01..2011-05-01 (config/churn.yaml).
 Open items: see NOTES.md (TO VERIFY).
 
-## Next: C3 (snapshot builder + features + labels)
+## C3: Snapshot builder, features, labels (done 2026-10-13, awaiting review, not committed)
+
+Built:
+- `config/features.yaml`: frequency windows (90/180/365), trend window (90), stock-code
+  normalisation (upper + strip), peak months (Nov, Dec inside the lookback), gap fill value for
+  one-purchase-day customers (365), home country (UK), censored tenure month (2009-12). Each has a
+  rationale; tests check that and that every window fits the lookback.
+- `src/churn/snapshots.py`: `FEATURES` (21 features, each with a one-line definition),
+  `snapshot_features` (one row per active customer, only lines strictly before the cutoff),
+  `churn_labels` (no purchase event in [cutoff, cutoff + 90d)), `build_snapshot`, and
+  `leakage_differences` (rebuilds features from data cut at the cutoff, with purchase events and
+  same-day cancellations recomputed, and lists any feature that changes).
+- `src/churn/run_c3.py`: builds and saves the 6 training snapshots and the 2011-09-01 test
+  snapshot; reports only row count and churn rate for the test cutoff; summary statistics pooled
+  over training cutoffs only. Renders `docs/C3_snapshots_and_features.md` from
+  `docs/templates/C3_snapshots_and_features.md`.
+- `config/data.yaml`: C3 output paths.
+
+Outputs: `results/c3_features.json`, `results/c3_feature_summary_training.csv` (committable);
+`data/processed/snapshots/snapshot_<cutoff>.parquet` x 7 (gitignored). Run: about 7 s, 0.7 GB peak.
+
+Tests: 96 unit tests (`pytest`; 25 new in `tests/test_snapshots.py`, 2 in `tests/test_config.py`),
+11 real-data checks (`pytest -m realdata`; 3 new in `tests/test_real_data_c3.py`: leakage at
+2010-12-01 and 2011-05-01, rows and churn equal C2 at 2011-05-01). All pass. Snapshot rows and
+churned counts equal `results/c2_churn_by_cutoff.csv` at all 7 cutoffs.
+
+How to run:
+```bash
+.venv/bin/python -m churn.run_c3
+.venv/bin/python -m pytest && .venv/bin/python -m pytest -m realdata
+```
+
+Open items: see NOTES.md (TO VERIFY).
+
+## Next: C4 (baselines + main model, out-of-time test)

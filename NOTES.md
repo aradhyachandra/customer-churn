@@ -6,17 +6,26 @@
   Kept as a product. Its revenue is negligible either way; confirm it should not be a non-product code.
 - **Within-sheet exact duplicates (C1):** dropped as the plan says. Some could be genuine repeat
   scans of the same item in one invoice at the same minute; the data cannot tell them apart.
-- **Lower-case stock code suffixes (C1, matters for C3):** some codes differ only in letter case
-  (for example 85123A and 85123a). Not changed in C1. Before counting "distinct products" in C3,
-  decide whether to treat them as one product.
-- **One stock code with a trailing space (C1):** "47503J " is a product line and left as is.
 - **Later-day full cancellations (C2):** kept as purchases (see docs/C2_cohorts_and_churn.md for
   counts). If C3 wants to drop them, it may only use cancellations dated before the cutoff.
 - **Churn rate differs between cutoffs (C2):** the base rate is not constant across the 10
   cutoffs (docs/C2_cohorts_and_churn.md). C4 should report the training and test base rates side by
   side and keep this in mind when reading calibration.
-- **Tenure is censored for the Dec 2009 cohort (matters for C3):** those customers' real first
-  purchase may be earlier than the data, so "days since first purchase" is a lower bound for them.
+- **Tenure is censored for the Dec 2009 cohort:** those customers' real first purchase may be
+  earlier than the data, so "days since first purchase" is a lower bound. C3 adds the flag
+  `first_seen_first_data_month`. Also, the largest possible tenure grows with the cutoff (about
+  365 days at 2010-12-01, more later), so tenure is not on quite the same scale at every cutoff.
+- **"Latest gap" meaning (C3):** `latest_gap_days` is the last *completed* gap (between the last
+  two purchase days); the "overdue" signal (time since the last purchase vs the usual gap) is the
+  separate `recency_gap_ratio`. PROJECT_PLAN.md Section 4 could be read either way; confirm.
+- **Heavy tails (C3, matters for C4):** in the training snapshots `recency_gap_ratio` reaches 363
+  (very frequent buyer who then stopped), `return_rate_365d` exceeds 1 and `net_revenue_*` can be
+  negative (returns of goods bought before the window). Values are kept as they are; logistic
+  regression in C4 may need log/clipping, decided on training data only.
+- **Same customer at several cutoffs (C3, matters for C4):** training rows repeat customers across
+  the 6 cutoffs, so any validation split inside training should group by customer or by cutoff.
+- **Optional 2011-06-01 training cutoff (C2 review):** its 90-day window ends 2011-08-30, before the
+  test cutoff, so it would be legitimate. Not added; training cutoffs stay 2010-12-01..2011-05-01.
 
 ## Decisions
 
@@ -39,3 +48,15 @@
 - **Training cutoffs (decided after C2, 2026-10-13):** monthly from 2010-12-01 to 2011-05-01
   (6 cutoffs), not from 2010-06-01 as PROJECT_PLAN.md Section 3 suggested: earlier cutoffs lack a
   full 365-day lookback. Set in config/churn.yaml (training_cutoffs).
+- **Stock code case/space variants (C3):** codes are upper-cased and stripped before counting
+  distinct products (config/features.yaml). All raw lines with such variants have no Customer ID,
+  so C1 removed them and no code merges in the clean data (counts in
+  docs/C3_snapshots_and_features.md). The rule stays as a safeguard.
+- **Seasonality flag (C3):** "bought in the Nov or Dec inside the 365-day lookback", which always
+  holds one complete November and December inside the data (tested for every configured cutoff),
+  unlike "last year's Nov-Dec", which is half missing at 2010-12-01.
+- **One purchase day (C3):** gap features take 365 (the lookback length), ratios follow, and
+  `single_purchase_day_365d` = 1 flags the rows. No NaNs in any snapshot.
+- **Test cutoff (C3):** its snapshot is built and saved; only its row count and churn rate are
+  reported. The run stops with an error if any snapshot, test included, has a missing value (an
+  integrity check; nothing is summarised).

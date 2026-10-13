@@ -1,0 +1,43 @@
+# Snapshot features (PROJECT_PLAN.md Section 4). Each setting has a one-line rationale.
+# Windows, purchase-event rule and cutoff convention come from config/churn.yaml. Every feature
+# uses only lines dated strictly before the cutoff (00:00 on its date).
+
+frequency_windows_days: [90, 180, 365]
+frequency_windows_days_rationale: >-
+  PROJECT_PLAN.md Section 4: orders and net revenue in the last 90, 180 and 365 days. No window is
+  longer than the 365-day lookback, so every window is fully inside the data at every cutoff.
+
+trend_window_days: 90
+trend_window_days_rationale: >-
+  PROJECT_PLAN.md Section 4: last 90 days compared with the 90 days before them. Trends are
+  differences (last minus previous), not ratios, so they stay defined when the earlier window is empty.
+
+stock_code_normalisation: upper_strip
+stock_code_normalisation_rationale: >-
+  Codes that differ only in letter case or by surrounding spaces (e.g. 85123A / 85123a, "47503J ")
+  are the same product, so codes are upper-cased and stripped before counting distinct products.
+  The run reports how many codes merge. The other allowed value is none.
+
+peak_months: [11, 12]
+peak_months_rationale: >-
+  PROJECT_PLAN.md Section 4 names the Nov-Dec peak. The flag is "bought in a November or December
+  that lies inside the 365-day lookback". Every cutoff is the first of a month and the lookback
+  covers exactly the 12 calendar months before it, so the window always holds one complete
+  November and one complete December, all inside the data. That holds at 2010-12-01 too (Dec 2009
+  and Nov 2010), whereas "last year's Nov-Dec" would there mean Nov-Dec 2009, half missing.
+
+single_purchase_gap_fill_days: 365
+single_purchase_gap_fill_days_rationale: >-
+  A customer with one purchase day in the lookback has no gap between purchases. Instead of NaN,
+  avg_gap_days and latest_gap_days take the lookback length (no repeat seen within 365 days), the
+  ratios are computed from those values, and single_purchase_day_365d = 1 marks these rows.
+
+home_country: United Kingdom
+home_country_rationale: >-
+  PROJECT_PLAN.md Section 4 groups country as UK vs rest. A customer's country is that of their
+  latest line before the cutoff (12 customers have two countries in the data, none involving the UK).
+
+tenure_censored_month: "2009-12"
+tenure_censored_month_rationale: >-
+  The data starts on 2009-12-01, so customers first seen in that month may have bought earlier and
+  their tenure is only a lower bound (NOTES.md). first_seen_first_data_month = 1 marks them.

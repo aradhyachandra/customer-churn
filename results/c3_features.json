@@ -1,0 +1,631 @@
+{
+  "generated_at": "2026-10-13T06:17:50+00:00",
+  "git": {
+    "commit": "8fb7edabe9b3a7c0ffaeab499bb0ab7e4a688584",
+    "uncommitted_changes": true
+  },
+  "input_file": "data/processed/transactions_clean.parquet",
+  "raw_sha256": "bcbe73b35f5b7babf197fb0cb983a11f5d9ff929078d4aa53d171b1f2df2e980",
+  "definitions": {
+    "churn": {
+      "purchase_event_rule": "drop_same_day_full_cancellations",
+      "exclude_return_only_customers": true,
+      "active_lookback_days": 365,
+      "churn_horizon_days": 90,
+      "sensitivity_horizons_days": [
+        60,
+        120
+      ],
+      "sensitivity_cutoff": "2011-05-01",
+      "test_cutoff": "2011-09-01",
+      "cutoff_convention": "start_of_day",
+      "cutoff_fit_rule": "full_windows_inside_data",
+      "training_cutoffs": {
+        "first": "2010-12-01",
+        "last": "2011-05-01",
+        "frequency": "monthly"
+      }
+    },
+    "features": {
+      "frequency_windows_days": [
+        90,
+        180,
+        365
+      ],
+      "trend_window_days": 90,
+      "stock_code_normalisation": "upper_strip",
+      "peak_months": [
+        11,
+        12
+      ],
+      "single_purchase_gap_fill_days": 365,
+      "home_country": "United Kingdom",
+      "tenure_censored_month": "2009-12"
+    }
+  },
+  "features": [
+    {
+      "name": "recency_days",
+      "definition": "Whole days from the last purchase day to the cutoff date (1 = bought the day before)."
+    },
+    {
+      "name": "orders_90d",
+      "definition": "Purchase events in the 90 days before the cutoff."
+    },
+    {
+      "name": "orders_180d",
+      "definition": "Purchase events in the 180 days before the cutoff."
+    },
+    {
+      "name": "orders_365d",
+      "definition": "Purchase events in the 365 days before the cutoff."
+    },
+    {
+      "name": "net_revenue_90d",
+      "definition": "Net value (£) of all lines, purchases minus returns, in the 90 days before the cutoff."
+    },
+    {
+      "name": "net_revenue_180d",
+      "definition": "Net value (£) of all lines in the 180 days before the cutoff."
+    },
+    {
+      "name": "net_revenue_365d",
+      "definition": "Net value (£) of all lines in the 365 days before the cutoff (trailing 12-month revenue)."
+    },
+    {
+      "name": "avg_order_value_365d",
+      "definition": "Value (£) of purchase events in the last 365 days divided by their number."
+    },
+    {
+      "name": "orders_trend_90d",
+      "definition": "Purchase events in the last 90 days minus those in the 90 days before them."
+    },
+    {
+      "name": "net_revenue_trend_90d",
+      "definition": "Net value (£) in the last 90 days minus net value in the 90 days before them."
+    },
+    {
+      "name": "single_purchase_day_365d",
+      "definition": "1 if the customer bought on only one day in the last 365 days (gap features then use fill values)."
+    },
+    {
+      "name": "avg_gap_days",
+      "definition": "Mean days between consecutive purchase days in the last 365 days (365 if only one purchase day)."
+    },
+    {
+      "name": "latest_gap_days",
+      "definition": "Days between the last two purchase days in the last 365 days (365 if only one purchase day)."
+    },
+    {
+      "name": "latest_gap_ratio",
+      "definition": "latest_gap_days / avg_gap_days (above 1: the last gap was longer than usual)."
+    },
+    {
+      "name": "recency_gap_ratio",
+      "definition": "recency_days / avg_gap_days (above 1: already waiting longer than the usual gap)."
+    },
+    {
+      "name": "tenure_days",
+      "definition": "Whole days from the first purchase day in the data to the cutoff date."
+    },
+    {
+      "name": "first_seen_first_data_month",
+      "definition": "1 if the first purchase is in the first data month (Dec 2009): tenure is a lower bound."
+    },
+    {
+      "name": "distinct_products_365d",
+      "definition": "Distinct stock codes (upper-cased, stripped) in purchase events in the last 365 days."
+    },
+    {
+      "name": "return_rate_365d",
+      "definition": "Value returned / value bought in the last 365 days; same-day full cancellations count on neither side. Can exceed 1 when earlier purchases are returned."
+    },
+    {
+      "name": "is_uk",
+      "definition": "1 if the country on the customer's latest line before the cutoff is the United Kingdom."
+    },
+    {
+      "name": "bought_in_peak_365d",
+      "definition": "1 if the customer bought in the November or December inside the last 365 days."
+    }
+  ],
+  "feature_count": 21,
+  "stock_codes": {
+    "method": "upper_strip",
+    "raw_distinct_codes": 5305,
+    "raw_codes_merged": 174,
+    "raw_lines_with_changed_code": 3472,
+    "raw_lines_with_changed_code_and_customer": 0,
+    "clean_distinct_codes": 4635,
+    "clean_codes_merged": 0
+  },
+  "purchase_events": {
+    "events": 36492,
+    "same_day_cancellation_invoices": 102
+  },
+  "training": {
+    "cutoffs": [
+      "2010-12-01",
+      "2011-01-01",
+      "2011-02-01",
+      "2011-03-01",
+      "2011-04-01",
+      "2011-05-01"
+    ],
+    "count": 6,
+    "rows": 25547,
+    "churned": 16425,
+    "missing_values": 0,
+    "per_cutoff": [
+      {
+        "cutoff": "2010-12-01",
+        "rows": 4236,
+        "churned": 2831,
+        "churn_rate": 0.6683191690273843,
+        "missing_values": 0,
+        "missing_by_feature": {
+          "recency_days": 0,
+          "orders_90d": 0,
+          "orders_180d": 0,
+          "orders_365d": 0,
+          "net_revenue_90d": 0,
+          "net_revenue_180d": 0,
+          "net_revenue_365d": 0,
+          "avg_order_value_365d": 0,
+          "orders_trend_90d": 0,
+          "net_revenue_trend_90d": 0,
+          "single_purchase_day_365d": 0,
+          "avg_gap_days": 0,
+          "latest_gap_days": 0,
+          "latest_gap_ratio": 0,
+          "recency_gap_ratio": 0,
+          "tenure_days": 0,
+          "first_seen_first_data_month": 0,
+          "distinct_products_365d": 0,
+          "return_rate_365d": 0,
+          "is_uk": 0,
+          "bought_in_peak_365d": 0
+        },
+        "single_purchase_day_share": 0.3519830028328612,
+        "first_seen_first_data_month_share": 0.2245042492917847,
+        "peak_months_in_lookback": [
+          "2009-12",
+          "2010-11"
+        ]
+      },
+      {
+        "cutoff": "2011-01-01",
+        "rows": 4202,
+        "churned": 2814,
+        "churn_rate": 0.6696811042360781,
+        "missing_values": 0,
+        "missing_by_feature": {
+          "recency_days": 0,
+          "orders_90d": 0,
+          "orders_180d": 0,
+          "orders_365d": 0,
+          "net_revenue_90d": 0,
+          "net_revenue_180d": 0,
+          "net_revenue_365d": 0,
+          "avg_order_value_365d": 0,
+          "orders_trend_90d": 0,
+          "net_revenue_trend_90d": 0,
+          "single_purchase_day_365d": 0,
+          "avg_gap_days": 0,
+          "latest_gap_days": 0,
+          "latest_gap_ratio": 0,
+          "recency_gap_ratio": 0,
+          "tenure_days": 0,
+          "first_seen_first_data_month": 0,
+          "distinct_products_365d": 0,
+          "return_rate_365d": 0,
+          "is_uk": 0,
+          "bought_in_peak_365d": 0
+        },
+        "single_purchase_day_share": 0.3510233222275107,
+        "first_seen_first_data_month_share": 0.20014278914802475,
+        "peak_months_in_lookback": [
+          "2010-11",
+          "2010-12"
+        ]
+      },
+      {
+        "cutoff": "2011-02-01",
+        "rows": 4218,
+        "churned": 2760,
+        "churn_rate": 0.6543385490753911,
+        "missing_values": 0,
+        "missing_by_feature": {
+          "recency_days": 0,
+          "orders_90d": 0,
+          "orders_180d": 0,
+          "orders_365d": 0,
+          "net_revenue_90d": 0,
+          "net_revenue_180d": 0,
+          "net_revenue_365d": 0,
+          "avg_order_value_365d": 0,
+          "orders_trend_90d": 0,
+          "net_revenue_trend_90d": 0,
+          "single_purchase_day_365d": 0,
+          "avg_gap_days": 0,
+          "latest_gap_days": 0,
+          "latest_gap_ratio": 0,
+          "recency_gap_ratio": 0,
+          "tenure_days": 0,
+          "first_seen_first_data_month": 0,
+          "distinct_products_365d": 0,
+          "return_rate_365d": 0,
+          "is_uk": 0,
+          "bought_in_peak_365d": 0
+        },
+        "single_purchase_day_share": 0.35467045993361784,
+        "first_seen_first_data_month_share": 0.1979611190137506,
+        "peak_months_in_lookback": [
+          "2010-11",
+          "2010-12"
+        ]
+      },
+      {
+        "cutoff": "2011-03-01",
+        "rows": 4258,
+        "churned": 2687,
+        "churn_rate": 0.631047440112729,
+        "missing_values": 0,
+        "missing_by_feature": {
+          "recency_days": 0,
+          "orders_90d": 0,
+          "orders_180d": 0,
+          "orders_365d": 0,
+          "net_revenue_90d": 0,
+          "net_revenue_180d": 0,
+          "net_revenue_365d": 0,
+          "avg_order_value_365d": 0,
+          "orders_trend_90d": 0,
+          "net_revenue_trend_90d": 0,
+          "single_purchase_day_365d": 0,
+          "avg_gap_days": 0,
+          "latest_gap_days": 0,
+          "latest_gap_ratio": 0,
+          "recency_gap_ratio": 0,
+          "tenure_days": 0,
+          "first_seen_first_data_month": 0,
+          "distinct_products_365d": 0,
+          "return_rate_365d": 0,
+          "is_uk": 0,
+          "bought_in_peak_365d": 0
+        },
+        "single_purchase_day_share": 0.3661343353687177,
+        "first_seen_first_data_month_share": 0.19492719586660404,
+        "peak_months_in_lookback": [
+          "2010-11",
+          "2010-12"
+        ]
+      },
+      {
+        "cutoff": "2011-04-01",
+        "rows": 4316,
+        "churned": 2686,
+        "churn_rate": 0.6223354958294718,
+        "missing_values": 0,
+        "missing_by_feature": {
+          "recency_days": 0,
+          "orders_90d": 0,
+          "orders_180d": 0,
+          "orders_365d": 0,
+          "net_revenue_90d": 0,
+          "net_revenue_180d": 0,
+          "net_revenue_365d": 0,
+          "avg_order_value_365d": 0,
+          "orders_trend_90d": 0,
+          "net_revenue_trend_90d": 0,
+          "single_purchase_day_365d": 0,
+          "avg_gap_days": 0,
+          "latest_gap_days": 0,
+          "latest_gap_ratio": 0,
+          "recency_gap_ratio": 0,
+          "tenure_days": 0,
+          "first_seen_first_data_month": 0,
+          "distinct_products_365d": 0,
+          "return_rate_365d": 0,
+          "is_uk": 0,
+          "bought_in_peak_365d": 0
+        },
+        "single_purchase_day_share": 0.3809082483781279,
+        "first_seen_first_data_month_share": 0.1897590361445783,
+        "peak_months_in_lookback": [
+          "2010-11",
+          "2010-12"
+        ]
+      },
+      {
+        "cutoff": "2011-05-01",
+        "rows": 4317,
+        "churned": 2647,
+        "churn_rate": 0.6131572851517257,
+        "missing_values": 0,
+        "missing_by_feature": {
+          "recency_days": 0,
+          "orders_90d": 0,
+          "orders_180d": 0,
+          "orders_365d": 0,
+          "net_revenue_90d": 0,
+          "net_revenue_180d": 0,
+          "net_revenue_365d": 0,
+          "avg_order_value_365d": 0,
+          "orders_trend_90d": 0,
+          "net_revenue_trend_90d": 0,
+          "single_purchase_day_365d": 0,
+          "avg_gap_days": 0,
+          "latest_gap_days": 0,
+          "latest_gap_ratio": 0,
+          "recency_gap_ratio": 0,
+          "tenure_days": 0,
+          "first_seen_first_data_month": 0,
+          "distinct_products_365d": 0,
+          "return_rate_365d": 0,
+          "is_uk": 0,
+          "bought_in_peak_365d": 0
+        },
+        "single_purchase_day_share": 0.38082001389854064,
+        "first_seen_first_data_month_share": 0.18693537178596248,
+        "peak_months_in_lookback": [
+          "2010-11",
+          "2010-12"
+        ]
+      }
+    ],
+    "feature_summary": [
+      {
+        "feature": "recency_days",
+        "mean": 112.95964301092104,
+        "min": 1.0,
+        "p10": 13.0,
+        "p25": 35.0,
+        "median": 89.0,
+        "p75": 168.0,
+        "p90": 262.0,
+        "max": 365.0
+      },
+      {
+        "feature": "orders_90d",
+        "mean": 1.0648217011782206,
+        "min": 0.0,
+        "p10": 0.0,
+        "p25": 0.0,
+        "median": 1.0,
+        "p75": 1.0,
+        "p90": 3.0,
+        "max": 80.0
+      },
+      {
+        "feature": "orders_180d",
+        "mean": 2.2513406662230397,
+        "min": 0.0,
+        "p10": 0.0,
+        "p25": 1.0,
+        "median": 1.0,
+        "p75": 3.0,
+        "p90": 5.0,
+        "max": 117.0
+      },
+      {
+        "feature": "orders_365d",
+        "mean": 4.210631385289858,
+        "min": 1.0,
+        "p10": 1.0,
+        "p25": 1.0,
+        "median": 2.0,
+        "p75": 5.0,
+        "p90": 9.0,
+        "max": 180.0
+      },
+      {
+        "feature": "net_revenue_90d",
+        "mean": 467.7607636121658,
+        "min": -11491.460000000001,
+        "p10": 0.0,
+        "p25": 0.0,
+        "median": 60.17,
+        "p75": 424.27,
+        "p90": 1017.7320000000001,
+        "max": 83567.69
+      },
+      {
+        "feature": "net_revenue_180d",
+        "mean": 997.1649609347477,
+        "min": -11491.460000000001,
+        "p10": 0.0,
+        "p25": 88.35,
+        "median": 349.11,
+        "p75": 889.22,
+        "p90": 1913.7520000000004,
+        "max": 177965.98
+      },
+      {
+        "feature": "net_revenue_365d",
+        "mean": 1852.3292572513406,
+        "min": -1663.06,
+        "p10": 146.47600000000008,
+        "p25": 294.95000000000005,
+        "median": 649.32,
+        "p75": 1574.8000000000002,
+        "p90": 3474.87,
+        "max": 318751.34
+      },
+      {
+        "feature": "avg_order_value_365d",
+        "mean": 377.49444284412084,
+        "min": 1.55,
+        "p10": 118.905,
+        "p25": 178.48000000000002,
+        "median": 285.38,
+        "p75": 423.51374999999996,
+        "p90": 670.3447500000009,
+        "max": 14844.766666666668
+      },
+      {
+        "feature": "orders_trend_90d",
+        "mean": -0.12169726386659882,
+        "min": -60.0,
+        "p10": -2.0,
+        "p25": -1.0,
+        "median": 0.0,
+        "p75": 1.0,
+        "p90": 2.0,
+        "max": 58.0
+      },
+      {
+        "feature": "net_revenue_trend_90d",
+        "mean": -61.64343371041608,
+        "min": -62677.87999999999,
+        "p10": -680.15,
+        "p25": -285.92499999999995,
+        "median": 0.0,
+        "p75": 190.1,
+        "p90": 568.28,
+        "max": 44068.38
+      },
+      {
+        "feature": "single_purchase_day_365d",
+        "mean": 0.36438720789133755,
+        "min": 0.0,
+        "p10": 0.0,
+        "p25": 0.0,
+        "median": 0.0,
+        "p75": 1.0,
+        "p90": 1.0,
+        "max": 1.0
+      },
+      {
+        "feature": "avg_gap_days",
+        "mean": 178.81360302249874,
+        "min": 1.0,
+        "p10": 23.75,
+        "p25": 45.69047619047619,
+        "median": 104.0,
+        "p75": 365.0,
+        "p90": 365.0,
+        "max": 365.0
+      },
+      {
+        "feature": "latest_gap_days",
+        "mean": 179.07930481074098,
+        "min": 1.0,
+        "p10": 15.0,
+        "p25": 39.0,
+        "median": 117.0,
+        "p75": 365.0,
+        "p90": 365.0,
+        "max": 365.0
+      },
+      {
+        "feature": "latest_gap_ratio",
+        "mean": 1.018418268068008,
+        "min": 0.009146341463414635,
+        "p10": 0.4808362369337979,
+        "p25": 1.0,
+        "median": 1.0,
+        "p75": 1.0,
+        "p90": 1.4803656869446347,
+        "max": 8.020833333333334
+      },
+      {
+        "feature": "recency_gap_ratio",
+        "mean": 1.9531318140012586,
+        "min": 0.0027397260273972603,
+        "p10": 0.12523510971786847,
+        "p25": 0.3095890410958904,
+        "median": 0.6575342465753424,
+        "p75": 1.329450579046593,
+        "p90": 3.1887191539365465,
+        "max": 363.0
+      },
+      {
+        "feature": "tenure_days",
+        "mean": 272.8939210083376,
+        "min": 1.0,
+        "p10": 74.0,
+        "p25": 162.0,
+        "median": 289.0,
+        "p75": 382.0,
+        "p90": 447.0,
+        "max": 516.0
+      },
+      {
+        "feature": "first_seen_first_data_month",
+        "mean": 0.19896661056092693,
+        "min": 0.0,
+        "p10": 0.0,
+        "p25": 0.0,
+        "median": 0.0,
+        "p75": 0.0,
+        "p90": 1.0,
+        "max": 1.0
+      },
+      {
+        "feature": "distinct_products_365d",
+        "mean": 61.29498571260813,
+        "min": 1.0,
+        "p10": 7.0,
+        "p25": 17.0,
+        "median": 37.0,
+        "p75": 76.0,
+        "p90": 142.0,
+        "max": 1712.0
+      },
+      {
+        "feature": "return_rate_365d",
+        "mean": 0.022907383936150723,
+        "min": 0.0,
+        "p10": 0.0,
+        "p25": 0.0,
+        "median": 0.0,
+        "p75": 0.013858802687612082,
+        "p90": 0.05136719763399574,
+        "max": 3.1796901622585128
+      },
+      {
+        "feature": "is_uk",
+        "mean": 0.919286021842095,
+        "min": 0.0,
+        "p10": 1.0,
+        "p25": 1.0,
+        "median": 1.0,
+        "p75": 1.0,
+        "p90": 1.0,
+        "max": 1.0
+      },
+      {
+        "feature": "bought_in_peak_365d",
+        "mean": 0.4663561279210866,
+        "min": 0.0,
+        "p10": 0.0,
+        "p25": 0.0,
+        "median": 0.0,
+        "p75": 1.0,
+        "p90": 1.0,
+        "max": 1.0
+      }
+    ],
+    "churn_rate": 0.6429326339687634
+  },
+  "test": {
+    "cutoff": "2011-09-01",
+    "rows": 4323,
+    "churned": 2181,
+    "churn_rate": 0.5045107564191533
+  },
+  "files": {
+    "2010-12-01": "data/processed/snapshots/snapshot_2010-12-01.parquet",
+    "2011-01-01": "data/processed/snapshots/snapshot_2011-01-01.parquet",
+    "2011-02-01": "data/processed/snapshots/snapshot_2011-02-01.parquet",
+    "2011-03-01": "data/processed/snapshots/snapshot_2011-03-01.parquet",
+    "2011-04-01": "data/processed/snapshots/snapshot_2011-04-01.parquet",
+    "2011-05-01": "data/processed/snapshots/snapshot_2011-05-01.parquet",
+    "2011-09-01": "data/processed/snapshots/snapshot_2011-09-01.parquet"
+  },
+  "outputs": {
+    "c3_feature_summary": "results/c3_feature_summary_training.csv",
+    "snapshots_dir": "data/processed/snapshots"
+  }
+}

@@ -54,3 +54,18 @@ def test_training_cutoffs_have_full_lookback_and_precede_test():
     last = pd.Timestamp(churn["training_cutoffs"]["last"])
     assert first - pd.Timedelta(days=churn["active_lookback_days"]) >= pd.Timestamp("2009-12-01")
     assert last + pd.Timedelta(days=churn["churn_horizon_days"]) <= pd.Timestamp(churn["test_cutoff"])
+
+
+def test_every_feature_setting_has_a_rationale():
+    features = load_config("features")
+    for key in features:
+        if not key.endswith("_rationale"):
+            assert features.get(f"{key}_rationale"), f"{key} has no rationale"
+
+
+def test_feature_windows_fit_the_lookback():
+    features = load_config("features")
+    lookback = load_config("churn")["active_lookback_days"]
+    assert max(features["frequency_windows_days"]) <= lookback
+    assert 2 * features["trend_window_days"] <= lookback
+    assert features["single_purchase_gap_fill_days"] == lookback

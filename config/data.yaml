@@ -29,3 +29,9 @@ paths:
   c2_heatmap: results/figures/c2_retention_heatmap.png
   c2_doc_template: docs/templates/C2_cohorts_and_churn.md
   c2_doc_output: docs/C2_cohorts_and_churn.md
+  # C3 outputs (snapshot tables stay in data/processed/; the report and summary are committed)
+  snapshots_dir: data/processed/snapshots                    # snapshot_<cutoff>.parquet
+  c3_report: results/c3_features.json
+  c3_feature_summary: results/c3_feature_summary_training.csv
+  c3_doc_template: docs/templates/C3_snapshots_and_features.md
+  c3_doc_output: docs/C3_snapshots_and_features.md
