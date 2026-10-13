@@ -1,0 +1,55 @@
+# Purchase events, cohorts and churn definitions (PROJECT_PLAN.md Section 3). Each setting has a
+# one-line rationale. Used from C2 on; C3 builds features and labels with the same settings.
+
+purchase_event_rule: drop_same_day_full_cancellations
+purchase_event_rule_rationale: >-
+  A purchase invoice is not a purchase event when a cancellation invoice from the same customer
+  on the same calendar day reverses exactly its lines (same stock codes, quantities and prices),
+  matched one to one. These look like order-entry reversals (e.g. customers 16446 and 12346), and
+  same-day matching never uses information from after the day, so it cannot leak past a cutoff.
+  Later-day mirror matches are measured and reported but kept: with repeat orders it is unclear
+  which purchase a later cancellation reverses. The other allowed value is all_purchase_invoices.
+
+exclude_return_only_customers: true
+exclude_return_only_customers_rationale: >-
+  Customers with no purchase event in the data (only returns after cleaning) have no first
+  purchase, so they cannot belong to a cohort; they are counted and reported instead.
+
+active_lookback_days: 365
+active_lookback_days_rationale: >-
+  PROJECT_PLAN.md Section 3: active at a cutoff = at least one purchase in the 365 days before it.
+
+churn_horizon_days: 90
+churn_horizon_days_rationale: >-
+  PROJECT_PLAN.md Section 3: churned = active customer with no purchase in the 90 days after the cutoff.
+
+sensitivity_horizons_days: [60, 120]
+sensitivity_horizons_days_rationale: >-
+  PROJECT_PLAN.md Section 3 asks for a 60- and 120-day sensitivity check on the 90-day window.
+
+sensitivity_cutoff: "2011-05-01"
+sensitivity_cutoff_rationale: >-
+  The last training cutoff named in PROJECT_PLAN.md Section 3; its 120-day window fits in the data
+  and it is not the test cutoff.
+
+test_cutoff: "2011-09-01"
+test_cutoff_rationale: >-
+  PROJECT_PLAN.md Section 3. In C2 it is only marked in the churn-per-cutoff table, nothing else.
+
+cutoff_convention: start_of_day
+cutoff_convention_rationale: >-
+  A cutoff is 00:00 on its date. History = purchases strictly before it, so the lookback is
+  [cutoff - 365 days, cutoff); the outcome window is [cutoff, cutoff + horizon). A purchase on
+  the cutoff date itself belongs to the future, which is the safe side for leakage.
+
+cutoff_fit_rule: full_windows_inside_data
+cutoff_fit_rule_rationale: >-
+  Monthly cutoffs (first of each month) are used only when the full lookback starts on or after the
+  first data day and the outcome window ends on or before the start of the last data day, which is
+  only partly covered (so the window holds only full days of data).
+
+training_cutoffs: {first: "2010-12-01", last: "2011-05-01", frequency: monthly}
+training_cutoffs_rationale: >-
+  Decided after C2 (Aradhya, 2026-10-13): 2010-12-01 is the first cutoff with a full 365-day
+  lookback (data starts 2009-12-01), so "active" means the same at every cutoff. The last training
+  cutoff stays as in PROJECT_PLAN.md Section 3; its 90-day window ends before the test cutoff.

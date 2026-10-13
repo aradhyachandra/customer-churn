@@ -1,0 +1,163 @@
+{
+  "generated_at": "2026-10-13T06:00:29+00:00",
+  "git": {
+    "commit": "c8a14e4a80dd3484154333d664b35d1bb64f1a4b",
+    "uncommitted_changes": true
+  },
+  "raw_file": "data/raw/online_retail_II.xlsx",
+  "raw_sha256": "bcbe73b35f5b7babf197fb0cb983a11f5d9ff929078d4aa53d171b1f2df2e980",
+  "rules": {
+    "cancellation_prefix": "C",
+    "non_product_stock_codes": [
+      "POST",
+      "DOT",
+      "C2",
+      "M",
+      "m",
+      "D",
+      "S",
+      "BANK CHARGES",
+      "ADJUST",
+      "ADJUST2",
+      "AMAZONFEE",
+      "B",
+      "CRUK",
+      "TEST001",
+      "TEST002",
+      "GIFT",
+      "gift_0001_10",
+      "gift_0001_20",
+      "gift_0001_30",
+      "gift_0001_40",
+      "gift_0001_50",
+      "gift_0001_60",
+      "gift_0001_70",
+      "gift_0001_80",
+      "gift_0001_90"
+    ]
+  },
+  "raw": {
+    "rows": 1067371,
+    "net_value": 19287250.57,
+    "rows_by_sheet": {
+      "Year 2009-2010": 525461,
+      "Year 2010-2011": 541910
+    }
+  },
+  "overlap": {
+    "sheets": {
+      "Year 2009-2010": {
+        "rows": 525461,
+        "first_date": "2009-12-01 07:45:00",
+        "last_date": "2010-12-09 20:01:00",
+        "within_sheet_duplicate_rows": 6865
+      },
+      "Year 2010-2011": {
+        "rows": 541910,
+        "first_date": "2010-12-01 08:26:00",
+        "last_date": "2011-12-09 12:50:00",
+        "within_sheet_duplicate_rows": 5268
+      }
+    },
+    "overlap_date_range": {
+      "start": "2010-12-01 08:26:00",
+      "end": "2010-12-09 20:01:00"
+    },
+    "rows_in_overlap_range": {
+      "Year 2009-2010": 22523,
+      "Year 2010-2011": 22523
+    },
+    "later_rows_identical_to_earlier_sheet": 22523,
+    "later_rows_identical_outside_overlap_range": 0,
+    "earlier_rows_in_range_without_match": 0,
+    "later_rows_in_range_without_match": 0
+  },
+  "steps": [
+    {
+      "step": "drop_sheet_overlap",
+      "rule": "Line in the later sheet identical to a line in the earlier sheet",
+      "rows_before": 1067371,
+      "rows_removed": 22523,
+      "rows_after": 1044848,
+      "rows_removed_by_sheet": {
+        "Year 2009-2010": 0,
+        "Year 2010-2011": 22523
+      },
+      "net_value_removed": 377488.45,
+      "sales_value_removed": 438852.65
+    },
+    {
+      "step": "drop_within_sheet_duplicates",
+      "rule": "Exact duplicate line within one sheet (first copy kept)",
+      "rows_before": 1044848,
+      "rows_removed": 11812,
+      "rows_after": 1033036,
+      "rows_removed_by_sheet": {
+        "Year 2009-2010": 6865,
+        "Year 2010-2011": 4947
+      },
+      "net_value_removed": 54228.42,
+      "sales_value_removed": 57481.47
+    },
+    {
+      "step": "drop_non_positive_price",
+      "rule": "Price is zero or negative",
+      "rows_before": 1033036,
+      "rows_removed": 6019,
+      "rows_after": 1027017,
+      "rows_removed_by_sheet": {
+        "Year 2009-2010": 3684,
+        "Year 2010-2011": 2335
+      },
+      "net_value_removed": -158676.14,
+      "sales_value_removed": 0.0
+    },
+    {
+      "step": "drop_non_product_codes",
+      "rule": "Stock code is a non-product code listed in config",
+      "rows_before": 1027017,
+      "rows_removed": 5745,
+      "rows_after": 1021272,
+      "rows_removed_by_sheet": {
+        "Year 2009-2010": 2923,
+        "Year 2010-2011": 2822
+      },
+      "net_value_removed": 86810.77,
+      "sales_value_removed": 832772.38
+    },
+    {
+      "step": "drop_missing_customer_id",
+      "rule": "No Customer ID",
+      "rows_before": 1021272,
+      "rows_removed": 227089,
+      "rows_after": 794183,
+      "rows_removed_by_sheet": {
+        "Year 2009-2010": 103048,
+        "Year 2010-2011": 124041
+      },
+      "net_value_removed": 2568806.36,
+      "sales_value_removed": 2575278.9
+    }
+  ],
+  "returns": {
+    "rows": 17587,
+    "net_value": -709990.03,
+    "cancellation_rows_with_positive_quantity": 0,
+    "negative_quantity_rows_not_cancellation": 0
+  },
+  "final": {
+    "rows": 794183,
+    "net_value": 16358592.71,
+    "rows_by_sheet": {
+      "Year 2009-2010": 408941,
+      "Year 2010-2011": 385242
+    },
+    "purchase_rows": 776596,
+    "sales_value": 17068582.74,
+    "customers": 5875,
+    "purchase_invoices": 36594,
+    "first_date": "2009-12-01 07:45:00",
+    "last_date": "2011-12-09 12:50:00"
+  },
+  "clean_file": "data/processed/transactions_clean.parquet"
+}

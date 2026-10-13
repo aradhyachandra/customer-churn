@@ -18,3 +18,14 @@ paths:
   cleaning_report: results/c1_cleaning_report.json
   doc_template: docs/templates/C1_data_and_cleaning.md
   doc_output: docs/C1_data_and_cleaning.md
+  # C2 outputs (small tables and figures are committed; parquet stays in data/processed/)
+  customer_months: data/processed/customer_months.parquet
+  c2_report: results/c2_cohorts_and_churn.json
+  c2_cohort_summary: results/c2_cohort_summary.csv
+  c2_retention_counts: results/c2_retention_counts.csv
+  c2_retention_rates: results/c2_retention_rates.csv
+  c2_churn_by_cutoff: results/c2_churn_by_cutoff.csv
+  c2_churn_sensitivity: results/c2_churn_sensitivity.csv
+  c2_heatmap: results/figures/c2_retention_heatmap.png
+  c2_doc_template: docs/templates/C2_cohorts_and_churn.md
+  c2_doc_output: docs/C2_cohorts_and_churn.md

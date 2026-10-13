@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from churn.report import render_template, save_report
+from churn.report import markdown_table, render_template, save_report
 
 
 def sample_report():
@@ -42,3 +42,29 @@ def test_render_indexes_into_lists():
 def test_render_unknown_placeholder_fails():
     with pytest.raises(KeyError, match="final.missing"):
         render_template("{{final.missing}}", sample_report())
+
+
+def test_render_named_tables():
+    out = render_template("Before\n{{table:churn}}\nAfter", sample_report(), tables={"churn": "| a |"})
+    assert out == "Before\n| a |\nAfter"
+
+
+def test_render_unknown_table_fails():
+    with pytest.raises(KeyError, match="table:missing"):
+        render_template("{{table:missing}}", sample_report(), tables={})
+
+
+def test_markdown_table_formats_values():
+    rows = [{"cutoff": "2011-01-01", "active": 1234, "rate": 0.25, "note": None}]
+    out = markdown_table(rows, [("cutoff", "Cutoff"), ("active", "Active"),
+                                ("rate", "Rate", "pct"), ("note", "Note")])
+    assert out.splitlines() == [
+        "| Cutoff | Active | Rate | Note |",
+        "|---|---:|---:|---|",
+        "| 2011-01-01 | 1,234 | 25.0% |  |",
+    ]
+
+
+def test_render_percent_suffix():
+    out = render_template("{{final.share|pct}}", {"final": {"share": 0.1234}})
+    assert out == "12.3%"

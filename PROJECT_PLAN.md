@@ -52,8 +52,8 @@ config. The model is evaluated on a later time period it never saw.
 - **Churn label:** an active customer with **no purchase in the 90 days after the cutoff**.
   The 90-day window is a choice; a sensitivity check uses 60 and 120 days.
 - **Snapshot design (no leakage):** features use only data on or before the cutoff; the label uses
-  only the 90 days after it. Several cutoffs build the training set (for example monthly from
-  2010-06-01 to 2011-05-01). The final **test set is a later, untouched cutoff** (2011-09-01, whose
+  only the 90 days after it. Several cutoffs build the training set (monthly from
+  2010-12-01, the first with a full 365-day lookback, to 2011-05-01). The final **test set is a later, untouched cutoff** (2011-09-01, whose
   90-day window ends inside the data). Nothing from the test period is used for training or tuning.
 - **Cohort:** month of a customer's first purchase. Retention = share of a cohort buying again in
   each later month.

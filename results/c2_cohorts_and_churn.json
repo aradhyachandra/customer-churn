@@ -1,0 +1,462 @@
+{
+  "generated_at": "2026-10-13T06:05:14+00:00",
+  "git": {
+    "commit": "c8a14e4a80dd3484154333d664b35d1bb64f1a4b",
+    "uncommitted_changes": true
+  },
+  "input_file": "data/processed/transactions_clean.parquet",
+  "raw_sha256": "bcbe73b35f5b7babf197fb0cb983a11f5d9ff929078d4aa53d171b1f2df2e980",
+  "definitions": {
+    "purchase_event_rule": "drop_same_day_full_cancellations",
+    "exclude_return_only_customers": true,
+    "active_lookback_days": 365,
+    "churn_horizon_days": 90,
+    "sensitivity_horizons_days": [
+      60,
+      120
+    ],
+    "sensitivity_cutoff": "2011-05-01",
+    "test_cutoff": "2011-09-01",
+    "cutoff_convention": "start_of_day",
+    "cutoff_fit_rule": "full_windows_inside_data",
+    "training_cutoffs": {
+      "first": "2010-12-01",
+      "last": "2011-05-01",
+      "frequency": "monthly"
+    }
+  },
+  "data": {
+    "first_date": "2009-12-01 07:45:00",
+    "last_date": "2011-12-09 12:50:00",
+    "last_month": "2011-12",
+    "last_month_partial": true,
+    "customers": 5875
+  },
+  "purchase_events": {
+    "purchase_invoices": 36594,
+    "same_day": {
+      "purchase_invoices": 102,
+      "customers": 79,
+      "value": 317606.32
+    },
+    "any_later_date": {
+      "purchase_invoices": 239,
+      "customers": 183,
+      "value": 378883.37
+    },
+    "largest_same_day": [
+      {
+        "customer_id": 16446,
+        "purchase_invoice": "581483",
+        "cancel_invoice": "C581484",
+        "value": 168469.6
+      },
+      {
+        "customer_id": 12346,
+        "purchase_invoice": "541431",
+        "cancel_invoice": "C541433",
+        "value": 77183.6
+      },
+      {
+        "customer_id": 16754,
+        "purchase_invoice": "513653",
+        "cancel_invoice": "C513771",
+        "value": 7500.32
+      },
+      {
+        "customer_id": 17450,
+        "purchase_invoice": "529350",
+        "cancel_invoice": "C529352",
+        "value": 6325.08
+      },
+      {
+        "customer_id": 12931,
+        "purchase_invoice": "508096",
+        "cancel_invoice": "C508132",
+        "value": 4815.8
+      }
+    ],
+    "chosen_rule": {
+      "rule": "drop_same_day_full_cancellations",
+      "purchase_invoices_dropped": 102,
+      "customers_left_with_no_purchase": 1,
+      "customers_first_purchase_month_changed": 4
+    },
+    "events_kept": 36492,
+    "customers_with_purchase": 5851
+  },
+  "return_only_customers": {
+    "customers": 24,
+    "lines": 99,
+    "net_value": -1406.13
+  },
+  "customer_months": {
+    "rows": 26797,
+    "file": "data/processed/customer_months.parquet",
+    "months_with_purchase": 25479
+  },
+  "cohorts": {
+    "count": 25,
+    "first": "2009-12",
+    "last": "2011-12",
+    "customers": 5851,
+    "first_cohort_size": 951,
+    "later_cohorts_median_size": 187.0,
+    "later_cohorts_max_size": 441,
+    "rows": [
+      {
+        "cohort": "2009-12",
+        "customers": 951,
+        "note": "includes customers who first bought before the data starts",
+        "m1": 0.3491062039957939,
+        "m3": 0.42481598317560465,
+        "m6": 0.3764458464773922,
+        "m12": 0.3764458464773922
+      },
+      {
+        "cohort": "2010-01",
+        "customers": 368,
+        "note": "",
+        "m1": 0.21195652173913043,
+        "m3": 0.31521739130434784,
+        "m6": 0.26902173913043476,
+        "m12": 0.22826086956521738
+      },
+      {
+        "cohort": "2010-02",
+        "customers": 374,
+        "note": "",
+        "m1": 0.23529411764705882,
+        "m3": 0.29411764705882354,
+        "m6": 0.1925133689839572,
+        "m12": 0.1497326203208556
+      },
+      {
+        "cohort": "2010-03",
+        "customers": 441,
+        "note": "",
+        "m1": 0.19047619047619047,
+        "m3": 0.24263038548752835,
+        "m6": 0.2471655328798186,
+        "m12": 0.19954648526077098
+      },
+      {
+        "cohort": "2010-04",
+        "customers": 294,
+        "note": "",
+        "m1": 0.19047619047619047,
+        "m3": 0.1598639455782313,
+        "m6": 0.2755102040816326,
+        "m12": 0.14285714285714285
+      },
+      {
+        "cohort": "2010-05",
+        "customers": 253,
+        "note": "",
+        "m1": 0.1541501976284585,
+        "m3": 0.17786561264822134,
+        "m6": 0.2134387351778656,
+        "m12": 0.1541501976284585
+      },
+      {
+        "cohort": "2010-06",
+        "customers": 267,
+        "note": "",
+        "m1": 0.1760299625468165,
+        "m3": 0.20599250936329588,
+        "m6": 0.12734082397003746,
+        "m12": 0.149812734082397
+      },
+      {
+        "cohort": "2010-07",
+        "customers": 186,
+        "note": "",
+        "m1": 0.15591397849462366,
+        "m3": 0.2956989247311828,
+        "m6": 0.11290322580645161,
+        "m12": 0.12903225806451613
+      },
+      {
+        "cohort": "2010-08",
+        "customers": 163,
+        "note": "",
+        "m1": 0.19631901840490798,
+        "m3": 0.32515337423312884,
+        "m6": 0.09815950920245399,
+        "m12": 0.147239263803681
+      },
+      {
+        "cohort": "2010-09",
+        "customers": 238,
+        "note": "",
+        "m1": 0.23109243697478993,
+        "m3": 0.13025210084033614,
+        "m6": 0.13865546218487396,
+        "m12": 0.226890756302521
+      },
+      {
+        "cohort": "2010-10",
+        "customers": 374,
+        "note": "",
+        "m1": 0.25668449197860965,
+        "m3": 0.12566844919786097,
+        "m6": 0.13101604278074866,
+        "m12": 0.1925133689839572
+      },
+      {
+        "cohort": "2010-11",
+        "customers": 327,
+        "note": "",
+        "m1": 0.1743119266055046,
+        "m3": 0.09480122324159021,
+        "m6": 0.13149847094801223,
+        "m12": 0.25076452599388377
+      },
+      {
+        "cohort": "2010-12",
+        "customers": 76,
+        "note": "month 12 is the partly covered last month",
+        "m1": 0.09210526315789473,
+        "m3": 0.09210526315789473,
+        "m6": 0.05263157894736842,
+        "m12": 0.02631578947368421
+      },
+      {
+        "cohort": "2011-01",
+        "customers": 72,
+        "note": "",
+        "m1": 0.1527777777777778,
+        "m3": 0.19444444444444445,
+        "m6": 0.1527777777777778,
+        "m12": null
+      },
+      {
+        "cohort": "2011-02",
+        "customers": 126,
+        "note": "",
+        "m1": 0.15873015873015872,
+        "m3": 0.19047619047619047,
+        "m6": 0.15873015873015872,
+        "m12": null
+      },
+      {
+        "cohort": "2011-03",
+        "customers": 179,
+        "note": "",
+        "m1": 0.1787709497206704,
+        "m3": 0.2011173184357542,
+        "m6": 0.20670391061452514,
+        "m12": null
+      },
+      {
+        "cohort": "2011-04",
+        "customers": 106,
+        "note": "",
+        "m1": 0.24528301886792453,
+        "m3": 0.19811320754716982,
+        "m6": 0.1792452830188679,
+        "m12": null
+      },
+      {
+        "cohort": "2011-05",
+        "customers": 111,
+        "note": "",
+        "m1": 0.23423423423423423,
+        "m3": 0.16216216216216217,
+        "m6": 0.26126126126126126,
+        "m12": null
+      },
+      {
+        "cohort": "2011-06",
+        "customers": 108,
+        "note": "month 6 is the partly covered last month",
+        "m1": 0.23148148148148148,
+        "m3": 0.26851851851851855,
+        "m6": 0.08333333333333333,
+        "m12": null
+      },
+      {
+        "cohort": "2011-07",
+        "customers": 101,
+        "note": "",
+        "m1": 0.2079207920792079,
+        "m3": 0.27722772277227725,
+        "m6": null,
+        "m12": null
+      },
+      {
+        "cohort": "2011-08",
+        "customers": 107,
+        "note": "",
+        "m1": 0.2616822429906542,
+        "m3": 0.2616822429906542,
+        "m6": null,
+        "m12": null
+      },
+      {
+        "cohort": "2011-09",
+        "customers": 188,
+        "note": "month 3 is the partly covered last month",
+        "m1": 0.2712765957446808,
+        "m3": 0.14893617021276595,
+        "m6": null,
+        "m12": null
+      },
+      {
+        "cohort": "2011-10",
+        "customers": 222,
+        "note": "",
+        "m1": 0.3153153153153153,
+        "m3": null,
+        "m6": null,
+        "m12": null
+      },
+      {
+        "cohort": "2011-11",
+        "customers": 191,
+        "note": "month 1 is the partly covered last month",
+        "m1": 0.14136125654450263,
+        "m3": null,
+        "m6": null,
+        "m12": null
+      },
+      {
+        "cohort": "2011-12",
+        "customers": 28,
+        "note": "",
+        "m1": null,
+        "m3": null,
+        "m6": null,
+        "m12": null
+      }
+    ]
+  },
+  "churn_by_cutoff": {
+    "lookback_days": 365,
+    "horizon_days": 90,
+    "first_cutoff": "2010-12-01",
+    "last_cutoff": "2011-09-01",
+    "count": 10,
+    "min_rate": 0.5045107564191533,
+    "max_rate": 0.6696811042360781,
+    "rows": [
+      {
+        "cutoff": "2010-12-01",
+        "active": 4236,
+        "churned": 2831,
+        "retained": 1405,
+        "churn_rate": 0.6683191690273843,
+        "is_test_cutoff": false
+      },
+      {
+        "cutoff": "2011-01-01",
+        "active": 4202,
+        "churned": 2814,
+        "retained": 1388,
+        "churn_rate": 0.6696811042360781,
+        "is_test_cutoff": false
+      },
+      {
+        "cutoff": "2011-02-01",
+        "active": 4218,
+        "churned": 2760,
+        "retained": 1458,
+        "churn_rate": 0.6543385490753911,
+        "is_test_cutoff": false
+      },
+      {
+        "cutoff": "2011-03-01",
+        "active": 4258,
+        "churned": 2687,
+        "retained": 1571,
+        "churn_rate": 0.631047440112729,
+        "is_test_cutoff": false
+      },
+      {
+        "cutoff": "2011-04-01",
+        "active": 4316,
+        "churned": 2686,
+        "retained": 1630,
+        "churn_rate": 0.6223354958294718,
+        "is_test_cutoff": false
+      },
+      {
+        "cutoff": "2011-05-01",
+        "active": 4317,
+        "churned": 2647,
+        "retained": 1670,
+        "churn_rate": 0.6131572851517257,
+        "is_test_cutoff": false
+      },
+      {
+        "cutoff": "2011-06-01",
+        "active": 4324,
+        "churned": 2741,
+        "retained": 1583,
+        "churn_rate": 0.6339037927844589,
+        "is_test_cutoff": false
+      },
+      {
+        "cutoff": "2011-07-01",
+        "active": 4313,
+        "churned": 2647,
+        "retained": 1666,
+        "churn_rate": 0.6137259448179921,
+        "is_test_cutoff": false
+      },
+      {
+        "cutoff": "2011-08-01",
+        "active": 4325,
+        "churned": 2461,
+        "retained": 1864,
+        "churn_rate": 0.5690173410404624,
+        "is_test_cutoff": false
+      },
+      {
+        "cutoff": "2011-09-01",
+        "active": 4323,
+        "churned": 2181,
+        "retained": 2142,
+        "churn_rate": 0.5045107564191533,
+        "is_test_cutoff": true
+      }
+    ]
+  },
+  "sensitivity": {
+    "cutoff": "2011-05-01",
+    "rows": [
+      {
+        "horizon_days": 60,
+        "cutoff": "2011-05-01",
+        "active": 4317,
+        "churned": 2938,
+        "retained": 1379,
+        "churn_rate": 0.6805652073198981
+      },
+      {
+        "horizon_days": 90,
+        "cutoff": "2011-05-01",
+        "active": 4317,
+        "churned": 2647,
+        "retained": 1670,
+        "churn_rate": 0.6131572851517257
+      },
+      {
+        "horizon_days": 120,
+        "cutoff": "2011-05-01",
+        "active": 4317,
+        "churned": 2483,
+        "retained": 1834,
+        "churn_rate": 0.5751679406995599
+      }
+    ]
+  },
+  "outputs": {
+    "c2_cohort_summary": "results/c2_cohort_summary.csv",
+    "c2_retention_counts": "results/c2_retention_counts.csv",
+    "c2_retention_rates": "results/c2_retention_rates.csv",
+    "c2_churn_by_cutoff": "results/c2_churn_by_cutoff.csv",
+    "c2_churn_sensitivity": "results/c2_churn_sensitivity.csv",
+    "c2_heatmap": "results/figures/c2_retention_heatmap.png"
+  }
+}

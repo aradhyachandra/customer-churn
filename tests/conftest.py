@@ -24,9 +24,17 @@ def make_lines(*overrides):
     df["stock_code"] = df["stock_code"].astype("str")
     df["description"] = df["description"].astype("str")
     df["quantity"] = df["quantity"].astype("int64")
-    df["invoice_date"] = pd.to_datetime(df["invoice_date"])
+    df["invoice_date"] = pd.to_datetime(df["invoice_date"], format="ISO8601")
     df["price"] = df["price"].astype("float64")
     df["customer_id"] = df["customer_id"].astype("Int64")
     df["country"] = df["country"].astype("str")
     df["sheet"] = df["sheet"].astype("str")
+    return df
+
+
+def make_clean(*overrides):
+    """Like make_lines, plus the two columns C1 adds (line_value, is_return)."""
+    df = make_lines(*overrides)
+    df["line_value"] = df["quantity"] * df["price"]
+    df["is_return"] = df["invoice"].str.startswith("C") | (df["quantity"] < 0)
     return df

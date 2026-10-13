@@ -1,6 +1,6 @@
 # C1: Data loading and cleaning
 
-*Generated from `results/c1_cleaning_report.json` on 2026-10-13T05:27:40+00:00 (git ac8f20b3a7ae793a1a3cee8072ca91f1ce4bafa2,
+*Generated from `results/c1_cleaning_report.json` on 2026-10-13T06:00:29+00:00 (git c8a14e4a80dd3484154333d664b35d1bb64f1a4b,
 uncommitted changes: True). Do not edit by hand; edit
 `docs/templates/C1_data_and_cleaning.md` and rerun `python -m churn.run_c1`.*
 

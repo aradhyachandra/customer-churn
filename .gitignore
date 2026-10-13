@@ -5,7 +5,11 @@ __pycache__/
 *.pyc
 .DS_Store
 .env
-results/
+# results/: small JSON/CSV reports and figures are committed; large or binary tables are not.
+results/**/*.parquet
+results/**/*.pkl
+results/**/*.joblib
+results/**/*.zip
 .claude/
 *.egg-info/
 .pytest_cache/
