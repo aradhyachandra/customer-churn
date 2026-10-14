@@ -59,3 +59,12 @@ Newer streamlit releases need pyarrow below 26. pyarrow 25 writes the parquet sn
 different bytes (the writer version is stored in the file), so the test snapshot's sha256 would
 change and `run_c5`/`run_c6` would refuse to run. Streamlit 1.58.0 is the newest release that
 accepts the pinned pyarrow 26.0.0. This check confirms that the combination reproduces everything.
+
+## Follow-up: pure clone after the C6 commit
+
+After C6 was committed, the check was repeated on a plain `git clone` of commit `7845612` with
+nothing copied over it (fresh venv, raw file copied in, `run_c1` to `run_c6`). All 36 results files
+match (`results/c6_pure_clone_check.json`, which adds `c6_clean_clone_check.json` to the set).
+The three model hashes match `results/c4_final_models.json`. 202 unit tests and 14 real-data tests
+pass. `churn.run_c4_test` was invoked once in the clone as a guard check and refused ("already
+exists"), as intended. Regenerated docs differ only in their generated-at line.

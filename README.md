@@ -129,5 +129,6 @@ All in `config/`, each with a written rationale. The business ones:
 
 ## Author
 
-Aradhya Chandra. Decisions and open questions are logged in `NOTES.md`, milestone by milestone
-progress in `PROGRESS.md`.
+Aradhya Chandra. Built with Claude Code as a coding assistant. The definitions, review decisions
+and business assumptions are mine. Decisions and open questions are logged in `NOTES.md`, and
+progress milestone by milestone in `PROGRESS.md`.
