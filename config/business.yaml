@@ -1,0 +1,60 @@
+# Business layer (PROJECT_PLAN.md Section 6). Every money figure in C5 is an ESTIMATE under these
+# assumptions, not an observed effect. Each setting has a one-line rationale. Values marked
+# TO VERIFY are judgement calls that are not in the data (see NOTES.md).
+
+model: gbm
+model_rationale: >-
+  The main model named in PROJECT_PLAN.md Section 5, chosen before the test cutoff was read. Its
+  frozen probabilities are used as they are (version a) and rescaled (version b).
+
+decision_day: test_cutoff
+decision_day_rationale: >-
+  "What we would have done on 2011-09-01": the business layer scores the active customers at the
+  test cutoff (config/churn.yaml) with the frozen model, using only information available that day.
+  Their actual outcomes are used only in clearly labelled after-the-fact checks.
+
+customer_value: net_revenue_365d_floored_at_zero
+customer_value_rationale: >-
+  PROJECT_PLAN.md Section 6: trailing 12-month net revenue (net_revenue_365d). A few customers
+  have negative net revenue (returns of goods bought earlier); they are counted as worth 0, not as
+  a gain if they leave. Assumes a kept customer would buy at their trailing 12-month level over
+  the next 12 months (TO VERIFY: a 90-day churner is not necessarily lost for 12 months).
+
+margin:
+  central: 0.30
+  scenarios: [0.20, 0.30, 0.40]
+margin_rationale: >-
+  Gross margin is not in the data. 30% central with 20% and 40% as low and high, as set in
+  PROJECT_PLAN.md Section 6 (TO VERIFY with the retailer).
+
+save_rate:
+  central: 0.10
+  scenarios: [0.05, 0.10, 0.20]
+save_rate_rationale: >-
+  Share of contacted would-be churners kept by the offer. Not observable here (no campaign in the
+  data). 5/10/20% as set in PROJECT_PLAN.md Section 6, 10% central (TO VERIFY).
+
+offer_cost_gbp:
+  central: 15
+  scenarios: [5, 15, 40]
+offer_cost_gbp_rationale: >-
+  Cost per contacted customer, paid whether or not the customer would have churned. TO VERIFY,
+  not in the data. Central GBP 15: a discount of about 5% on a typical order (the median order
+  value at the training cutoffs is reported in docs/C5_drivers_and_business.md) plus an emailed
+  contact, counted in full for every contacted customer (conservative: some never redeem it).
+  Low GBP 5: an email with a small fixed voucher. High GBP 40: a 10% discount on a typical order
+  plus a phone call by staff.
+
+rescale_method: logit_shift
+rescale_method_rationale: >-
+  Version (b) adds one constant to every customer's log-odds so the mean probability equals the
+  reference churn rate. Ranking is unchanged and every probability stays between 0 and 1 (a plain
+  multiplier could push some above 1).
+
+rescale_reference_cutoff: "2011-06-01"
+rescale_reference_cutoff_rationale: >-
+  The most recent cutoff whose 90-day outcome window ends before the decision day: 2011-06-01's
+  window ends 2011-08-30; 2011-07-01's ends 2011-09-29, after it. So its churn rate
+  (results/c2_churn_by_cutoff.csv) was known on 2011-09-01. Checked in code
+  (churn.business.reference_churn_rate). It is not a training cutoff, but only its overall churn
+  rate is used, no customer labels, and nothing is refitted.

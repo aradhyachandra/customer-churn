@@ -1,0 +1,173 @@
+{
+  "validation_generated_at": "2026-10-13T16:30:26+00:00",
+  "base": {
+    "customers": 4323,
+    "churners": 2181,
+    "churn_rate": 0.5045107564191533
+  },
+  "rates": {
+    "tuning": {
+      "customers": 8438,
+      "churners": 5645,
+      "churn_rate": 0.6689973927470965
+    },
+    "validation": {
+      "customers": 4317,
+      "churners": 2647,
+      "churn_rate": 0.6131572851517257
+    },
+    "final_training": {
+      "customers": 25547,
+      "churners": 16425,
+      "churn_rate": 0.6429326339687634
+    },
+    "per_training_cutoff": {
+      "2010-12-01": {
+        "customers": 4236,
+        "churners": 2831,
+        "churn_rate": 0.6683191690273843
+      },
+      "2011-01-01": {
+        "customers": 4202,
+        "churners": 2814,
+        "churn_rate": 0.6696811042360781
+      },
+      "2011-02-01": {
+        "customers": 4218,
+        "churners": 2760,
+        "churn_rate": 0.6543385490753911
+      },
+      "2011-03-01": {
+        "customers": 4258,
+        "churners": 2687,
+        "churn_rate": 0.631047440112729
+      },
+      "2011-04-01": {
+        "customers": 4316,
+        "churners": 2686,
+        "churn_rate": 0.6223354958294718
+      },
+      "2011-05-01": {
+        "customers": 4317,
+        "churners": 2647,
+        "churn_rate": 0.6131572851517257
+      }
+    }
+  },
+  "gap": {
+    "logistic": {
+      "mean_predicted": 0.6705975543753186,
+      "gap_points": "16.6"
+    },
+    "gbm": {
+      "mean_predicted": 0.6407557950699067,
+      "gap_points": "13.6"
+    }
+  },
+  "comparison": {
+    "gbm_vs_rule": "Gradient boosting beats the recency rule: the 95% intervals of PR-AUC, precision in the top 10%, precision in the top 20% do not overlap.",
+    "gbm_vs_logistic": "Gradient boosting vs logistic regression is not settled: their 95% intervals overlap on PR-AUC, precision in the top 10%, precision in the top 20%.",
+    "logistic_vs_rule": "Logistic regression vs the recency rule is not settled: their 95% intervals overlap on precision in the top 10%, precision in the top 20%."
+  },
+  "season": {
+    "rows": [
+      {
+        "cutoff": "2010-12-01",
+        "role": "training",
+        "window": "2010-12-01 to 2011-02-28",
+        "season_days": 0,
+        "active": 4236,
+        "churned": 2831,
+        "churn_rate": 0.6683191690273843
+      },
+      {
+        "cutoff": "2011-01-01",
+        "role": "training",
+        "window": "2011-01-01 to 2011-03-31",
+        "season_days": 0,
+        "active": 4202,
+        "churned": 2814,
+        "churn_rate": 0.6696811042360781
+      },
+      {
+        "cutoff": "2011-02-01",
+        "role": "training",
+        "window": "2011-02-01 to 2011-05-01",
+        "season_days": 0,
+        "active": 4218,
+        "churned": 2760,
+        "churn_rate": 0.6543385490753911
+      },
+      {
+        "cutoff": "2011-03-01",
+        "role": "training",
+        "window": "2011-03-01 to 2011-05-29",
+        "season_days": 0,
+        "active": 4258,
+        "churned": 2687,
+        "churn_rate": 0.631047440112729
+      },
+      {
+        "cutoff": "2011-04-01",
+        "role": "training",
+        "window": "2011-04-01 to 2011-06-29",
+        "season_days": 0,
+        "active": 4316,
+        "churned": 2686,
+        "churn_rate": 0.6223354958294718
+      },
+      {
+        "cutoff": "2011-05-01",
+        "role": "training",
+        "window": "2011-05-01 to 2011-07-29",
+        "season_days": 0,
+        "active": 4317,
+        "churned": 2647,
+        "churn_rate": 0.6131572851517257
+      },
+      {
+        "cutoff": "2011-06-01",
+        "role": "not used",
+        "window": "2011-06-01 to 2011-08-29",
+        "season_days": 0,
+        "active": 4324,
+        "churned": 2741,
+        "churn_rate": 0.6339037927844589
+      },
+      {
+        "cutoff": "2011-07-01",
+        "role": "not used",
+        "window": "2011-07-01 to 2011-09-28",
+        "season_days": 28,
+        "active": 4313,
+        "churned": 2647,
+        "churn_rate": 0.6137259448179921
+      },
+      {
+        "cutoff": "2011-08-01",
+        "role": "not used",
+        "window": "2011-08-01 to 2011-10-29",
+        "season_days": 59,
+        "active": 4325,
+        "churned": 2461,
+        "churn_rate": 0.5690173410404624
+      },
+      {
+        "cutoff": "2011-09-01",
+        "role": "test",
+        "window": "2011-09-01 to 2011-11-29",
+        "season_days": 90,
+        "active": 4323,
+        "churned": 2181,
+        "churn_rate": 0.5045107564191533
+      }
+    ],
+    "max_training_days": 0,
+    "test_days": 90
+  },
+  "outputs": {
+    "c4_test_metrics": "results/c4_test_metrics.json",
+    "c4_test_summary": "results/c4_test_summary.csv",
+    "c4_test_calibration_plot": "results/figures/c4_test_calibration.png"
+  }
+}

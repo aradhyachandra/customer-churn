@@ -121,3 +121,83 @@ def calibration_plot(tables, path, title):
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path, bbox_inches="tight")
     plt.close(fig)
+
+
+def _tidy(ax):
+    ax.grid(color="#e6e6e3", linewidth=0.8)
+    ax.set_axisbelow(True)
+    ax.tick_params(labelsize=8, colors=INK, length=0)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    for side in ("left", "bottom"):
+        ax.spines[side].set_color("#c9c9c4")
+
+
+def _save(fig, path):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path, bbox_inches="tight")
+    plt.close(fig)
+
+
+def importance_plot(table, path, title, highlight, xlabel):
+    """Horizontal bars of mean permutation importance with a low-high whisker per feature, most
+    important at the top; the first `highlight` features in the main blue, the rest light."""
+    t = table.sort_values("rank")
+    n = len(t)
+    fig, ax = plt.subplots(figsize=(7.5, 0.28 * n + 1.2), dpi=150)
+    y = np.arange(n)[::-1]
+    colors = [SERIES[0] if r <= highlight else BLUES[1] for r in t["rank"]]
+    ax.barh(y, t["mean"], height=0.7, color=colors)
+    ax.errorbar(t["mean"], y, xerr=[t["mean"] - t["low"], t["high"] - t["mean"]], fmt="none",
+                ecolor=INK, elinewidth=1, capsize=2)
+    ax.set_yticks(y, t["feature"], fontsize=8, color=INK)
+    ax.axvline(0, color="#c9c9c4", linewidth=1)
+    ax.set_xlabel(xlabel, fontsize=9, color=INK)
+    ax.set_title(title, fontsize=12, color=INK, loc="left", pad=10)
+    _tidy(ax)
+    ax.grid(axis="y", visible=False)
+    _save(fig, path)
+
+
+def partial_dependence_plot(table, features, path, title):
+    """One small panel per feature (shared y axis): average predicted churn probability vs the value."""
+    cols = 2
+    rows = int(np.ceil(len(features) / cols))
+    fig, axes = plt.subplots(rows, cols, figsize=(8, 3.2 * rows), dpi=150, sharey=True, squeeze=False)
+    for ax, f in zip(axes.flat, features):
+        d = table[table["feature"] == f].sort_values("value")
+        ax.plot(d["value"], d["mean_predicted"], color=SERIES[0], linewidth=2, marker="o", markersize=4)
+        ax.set_title(f, fontsize=10, color=INK, loc="left")
+        ax.yaxis.set_major_formatter(lambda v, _: f"{v:.0%}")
+        _tidy(ax)
+    for ax in axes.flat[len(features):]:
+        ax.set_visible(False)
+    for ax in axes[:, 0]:
+        ax.set_ylabel("Average predicted churn", fontsize=9, color=INK)
+    fig.suptitle(title, fontsize=12, color=INK, x=0.02, ha="left")
+    fig.tight_layout()
+    _save(fig, path)
+
+
+def campaign_plot(central, band_low, band_high, best_size, path, title, central_label, band_label):
+    """Total expected net benefit (GBP) vs number of customers contacted: the central case as a line,
+    the range over all scenarios as a shaded band, and a marker at the central best size."""
+    x = np.arange(len(central))
+    fig, ax = plt.subplots(figsize=(8, 4.8), dpi=150)
+    ax.fill_between(x, band_low, band_high, color=BLUES[0], linewidth=0, label=band_label)
+    ax.plot(x, central, color=SERIES[0], linewidth=2, label=central_label)
+    ax.axhline(0, color=MUTED, linewidth=1)
+    ax.plot([best_size], [central[best_size]], marker="o", markersize=8, color=SERIES[0],
+            markeredgecolor="white", markeredgewidth=1.5, zorder=5)
+    ax.annotate(f"best: {best_size:,} customers, £{central[best_size]:,.0f}", (best_size, central[best_size]),
+                xytext=(10, 10), textcoords="offset points", fontsize=8.5, color=INK)
+    ax.set_xlabel("Customers contacted (highest expected benefit first)", fontsize=9, color=INK)
+    ax.set_ylabel("Total expected net benefit (£, estimate)", fontsize=9, color=INK)
+    ax.yaxis.set_major_formatter(lambda v, _: f"{'-' if v < 0 else ''}£{abs(v):,.0f}")
+    ax.xaxis.set_major_formatter(lambda v, _: f"{v:,.0f}")
+    ax.set_xlim(0, len(central) - 1)
+    ax.set_title(title, fontsize=12, color=INK, loc="left", pad=10)
+    ax.legend(frameon=False, fontsize=8.5, loc="upper right", labelcolor=INK)
+    _tidy(ax)
+    _save(fig, path)

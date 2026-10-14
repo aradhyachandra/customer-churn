@@ -46,3 +46,21 @@ paths:
   c4_test_metrics: results/c4_test_metrics.json              # written once by run_c4_test (part B)
   c4_doc_template: docs/templates/C4_models.md
   c4_doc_output: docs/C4_models.md
+  # C4 part B write-up (rendered from the saved test JSON; nothing is rescored)
+  c4_test_doc_template: docs/templates/C4_test_results.md
+  c4_test_summary: results/c4_test_summary.csv
+  c4_test_writeup: results/c4_test_writeup.json
+  c4_test_calibration_plot: results/figures/c4_test_calibration.png
+  # C5 outputs (drivers and business layer at the test cutoff; all committable)
+  c5_drivers: results/c5_drivers.json
+  c5_permutation_importance: results/c5_permutation_importance.csv
+  c5_partial_dependence: results/c5_partial_dependence.csv
+  c5_driver_statements: results/c5_driver_statements.csv
+  c5_business: results/c5_business.json
+  c5_campaign_scenarios: results/c5_campaign_scenarios.csv
+  c5_campaign_curve: results/c5_campaign_curve.csv
+  c5_importance_plot: results/figures/c5_permutation_importance.png
+  c5_pdp_plot: results/figures/c5_partial_dependence.png
+  c5_campaign_plot: results/figures/c5_campaign_net_benefit.png
+  c5_doc_template: docs/templates/C5_drivers_and_business.md
+  c5_doc_output: docs/C5_drivers_and_business.md

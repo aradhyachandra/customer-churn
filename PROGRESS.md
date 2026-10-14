@@ -150,6 +150,53 @@ How to run:
 
 Open items: see NOTES.md (TO VERIFY, C4 entries).
 
-## Next: C4 part B (after review and commit of part A)
-Run `python -m churn.run_c4_test` once from a clean committed tree, then fill the test section of
-`docs/C4_models.md` from `results/c4_test_metrics.json`.
+## C4 part B: one-shot test (run once 2026-10-13 at 472fd3d, committed a7cacc0); write-up 2026-10-14
+
+The test JSON was rendered into docs/C4_models.md by `python -m churn.render_c4_test` (new
+template docs/templates/C4_test_results.md; validation part of the doc unchanged). It adds
+validation vs test side by side, base rates, counts, test calibration
+(results/figures/c4_test_calibration.png) and the seasonal TO VERIFY hypothesis. The test was not
+rerun. New files: results/c4_test_summary.csv, results/c4_test_writeup.json.
+
+## C5: Drivers and business layer (done 2026-10-14, uncommitted, awaiting review)
+
+Built:
+- `config/drivers.yaml`: permutation settings (PR-AUC, 30 shuffles), partial dependence (top 4,
+  20 points, 5th-95th percentile), 11 plain-language statements (3 added after the ranking,
+  flagged). `config/business.yaml`: model, decision day, customer value, margin, save rate, offer
+  cost (TO VERIFY), rescale method (logit shift) and reference cutoff (2011-06-01). All with rationales.
+- `src/churn/drivers.py`: permutation importance table, brute-force partial dependence on the
+  probability scale, group churn statements (with an optional "among" subgroup).
+- `src/churn/business.py`: customer value floor, revenue at risk, expected benefit, campaign curve
+  and best size, rescaling to a mean, the "known on the day" reference-rate check, scenario grid.
+- `src/churn/run_c5.py`: guards (frozen model/snapshot hashes, recomputed scores equal the saved
+  test results), drivers on the test cutoff, statements on the 6 training cutoffs, business layer
+  as of 2011-09-01, saved tables, 3 figures, renders docs/C5_drivers_and_business.md.
+- `src/churn/plots.py`: importance, partial dependence and campaign plots.
+
+Outputs (committable): results/c5_drivers.json, c5_permutation_importance.csv,
+c5_partial_dependence.csv, c5_driver_statements.csv, c5_business.json, c5_campaign_scenarios.csv,
+c5_campaign_curve.csv, results/figures/c5_{permutation_importance,partial_dependence,campaign_net_benefit}.png.
+Run: about 11 s.
+
+Headline results (all in docs/C5_drivers_and_business.md): top drivers orders_365d,
+net_revenue_365d, tenure_days, recency_days (5th, latest_gap_days, tied with 4th). Revenue at risk
+GBP 2.32m (a) / 2.28m (b), estimates. Central case (b): contact 1,567 customers, expected net
+benefit GBP 22,621 (estimate); after the fact 562 of them churned (35.9%).
+
+Tests: 179 unit tests (`pytest`; new: test_business.py with hand-worked benefit and rescaling
+fixtures, test_drivers.py, test_render_c4_test.py, test_run_c5.py, 3 plot tests), 14 real-data
+checks (`pytest -m realdata`; new: tests/test_real_data_c5.py). All pass.
+
+How to run:
+```bash
+.venv/bin/python -m churn.render_c4_test
+.venv/bin/python -m churn.run_c5
+.venv/bin/python -m pytest && .venv/bin/python -m pytest -m realdata
+```
+
+Not done: nothing reran churn.run_c4_test, run_c4 or refit any model (model files unchanged, sha256
+checked). Open items: NOTES.md (TO VERIFY, C4 part B and C5 entries).
+
+## Next: C6 (after review and commit of C5)
+Report, dashboard, README (PROJECT_PLAN.md Section 8).

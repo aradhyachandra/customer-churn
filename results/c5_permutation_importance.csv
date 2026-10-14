@@ -1,0 +1,22 @@
+rank,feature,mean,std,low,high,repeats,definition
+1,orders_365d,0.033393,0.003761,0.027080,0.039756,30,Purchase events in the 365 days before the cutoff.
+2,net_revenue_365d,0.019407,0.004306,0.010573,0.025762,30,Net value (£) of all lines in the 365 days before the cutoff (trailing 12-month revenue).
+3,tenure_days,0.016992,0.003867,0.010623,0.025076,30,Whole days from the first purchase day in the data to the cutoff date.
+4,recency_days,0.015404,0.002977,0.010109,0.020974,30,Whole days from the last purchase day to the cutoff date (1 = bought the day before).
+5,latest_gap_days,0.015177,0.003346,0.009131,0.021356,30,Days between the last two purchase days in the last 365 days (365 if only one purchase day).
+6,avg_gap_days,0.003425,0.001739,-0.000027,0.006216,30,Mean days between consecutive purchase days in the last 365 days (365 if only one purchase day).
+7,net_revenue_180d,0.002080,0.001593,-0.000740,0.005296,30,Net value (£) of all lines in the 180 days before the cutoff.
+8,recency_gap_ratio,0.001896,0.001703,-0.000604,0.005319,30,recency_days / avg_gap_days (above 1: already waiting longer than the usual gap).
+9,return_rate_365d,0.001119,0.000916,-0.000676,0.002724,30,Value returned / value bought in the last 365 days; same-day full cancellations count on neither side. Can exceed 1 when earlier purchases are returned.
+10,bought_in_peak_365d,0.001029,0.000658,-0.000152,0.002185,30,1 if the customer bought in the November or December inside the last 365 days.
+11,latest_gap_ratio,0.000949,0.001162,-0.001167,0.003016,30,latest_gap_days / avg_gap_days (above 1: the last gap was longer than usual).
+12,orders_180d,0.000710,0.000971,-0.000940,0.002569,30,Purchase events in the 180 days before the cutoff.
+13,is_uk,0.000446,0.000466,-0.000311,0.001262,30,1 if the country on the customer's latest line before the cutoff is the United Kingdom.
+14,avg_order_value_365d,0.000392,0.001339,-0.001829,0.002973,30,Value (£) of purchase events in the last 365 days divided by their number.
+15,net_revenue_trend_90d,0.000228,0.000727,-0.001024,0.001334,30,Net value (£) in the last 90 days minus net value in the 90 days before them.
+16,net_revenue_90d,0.000112,0.000847,-0.001471,0.001807,30,"Net value (£) of all lines, purchases minus returns, in the 90 days before the cutoff."
+17,distinct_products_365d,0.000111,0.001372,-0.002073,0.003069,30,"Distinct stock codes (upper-cased, stripped) in purchase events in the last 365 days."
+18,orders_90d,0.000044,0.000351,-0.000469,0.000795,30,Purchase events in the 90 days before the cutoff.
+19,first_seen_first_data_month,0.000039,0.000080,-0.000102,0.000170,30,1 if the first purchase is in the first data month (Dec 2009): tenure is a lower bound.
+20,single_purchase_day_365d,0.000000,0.000000,0.000000,0.000000,30,1 if the customer bought on only one day in the last 365 days (gap features then use fill values).
+21,orders_trend_90d,-0.000165,0.000708,-0.001425,0.001151,30,Purchase events in the last 90 days minus those in the 90 days before them.

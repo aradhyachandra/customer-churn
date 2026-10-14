@@ -48,6 +48,39 @@
   (before commit, so "uncommitted: true"); the test JSON records the commit it actually ran on.
   Model files are byte-identical across reruns of run_c4 (checked), so their sha256 is stable.
 
+- **Lower test churn: seasonal hypothesis (C4 part B), NOT a finding.** No training cutoff has an
+  outcome window in Sep-Nov (pre-Christmas buying); the test window (2011-09-01..11-29) lies
+  entirely in it. Descriptive check (docs/C4_models.md, from results/c2_churn_by_cutoff.csv): churn
+  is 63.4% at 2011-06-01 (0 Sep-Nov days in the window), 61.4% at 07-01 (28), 56.9% at 08-01 (59),
+  50.5% at 09-01 (90). Consistent with the hypothesis, but churn was already drifting down over
+  the training months and the data hold only one autumn with a full lookback, so trend and season
+  cannot be separated.
+- **Offer cost (C5):** GBP 5 / 15 / 40 per contacted customer (config/business.yaml) are judgement
+  calls, not data. Central GBP 15 is about 5% of the median training order value (GBP 285) plus an
+  email, counted for every contacted customer. Check with the retailer.
+- **Margin and save rate (C5):** 30% (20-40%) and 10% (5/10/20%) as in the plan; not in the data.
+- **Customer value horizon (C5):** a kept customer is valued at 12 months of trailing net revenue,
+  but "churned" only means no purchase in 90 days; some churners come back. Revenue at risk is
+  likely overstated (after the fact, churners held GBP 1.58m vs GBP 2.28m-2.32m estimated).
+- **Value-weighted targeting picks fewer churners (C5, after-the-fact):** the central-case list
+  (1,567 customers, ranked by p x value) held 562 churners (35.9%), against 1,166 for the same
+  number ranked by p alone. That is the intended trade (value over churn odds), but any change to
+  the targeting rule must be argued on training/validation data, never from these test outcomes.
+  Found in the C5 review, worth computing in code and reporting in C6: the chosen list is
+  over-predicted more than the population (reviewer's check: mean rescaled p about 0.52 vs about
+  0.36 churned, against about 0.63 vs 0.50 for everyone). Value-weighting pulls in high-value,
+  mid-probability customers, where the over-prediction is relatively largest. This is why the
+  money estimate shrinks with actual outcomes (GBP 22,621 expected vs GBP 7,473). The central-case
+  curve is also flat near its peak, so campaign size matters less than the assumptions.
+- **Driver statements added after the ranking (C5):** three statements in config/drivers.yaml
+  (net_revenue_365d < 300; recency_gap_ratio > 2 and latest_gap_days > 90 among repeat buyers)
+  were added after the permutation ranking was seen: no statement covered the #2 driver, and the
+  plan's "twice the usual gap" statement is flat over all rows (65.8% vs 64.0%) because one-day
+  buyers get a filled gap of 365. They use training rows only and are marked in the doc.
+- **Permutation importance and correlated features (C5):** related features share credit
+  (order/revenue windows, gap features; single_purchase_day_365d shows 0.0000 because it nearly
+  equals orders_365d = 1). Ranks 4 and 5 are tied within noise. The spread is over shuffles only.
+
 ## Decisions
 
 - **Sheet overlap (C1):** measured, not assumed. The overlap window is an exact copy in both sheets
@@ -97,3 +130,16 @@
   recall. Decided before the test cutoff was read.
 - **Test cutoff (C4 part A):** never read. The validation code loads snapshots through
   load_snapshots, which refuses the test cutoff (tested on fixtures and on real data).
+- **C4 test write-up (part B, 2026-10-14):** the test section of docs/C4_models.md is rendered
+  from results/c4_test_metrics.json by `python -m churn.render_c4_test` (template
+  docs/templates/C4_test_results.md), which loads no model and scores nothing. "Beats" is used
+  only when the 95% bootstrap intervals of PR-AUC and precision@10/20% all do not overlap:
+  boosting beats the recency rule; boosting vs logistic is not settled.
+- **C5 uses the frozen boosting model only (2026-10-14):** loaded with the sha256 check; run_c5
+  refuses unless the model hashes and test snapshot sha256 match results/c4_test_metrics.json and
+  the recomputed PR-AUC and mean probability equal the saved ones. Test outcomes are used only for
+  permutation importance and labelled after-the-fact checks.
+- **Rescaling (C5):** version (b) shifts every log-odds by one constant so the mean probability
+  equals the churn rate at 2011-06-01 (63.4%), the latest cutoff whose window (ends 2011-08-30)
+  closed before 2011-09-01 (checked in code). Only that aggregate rate is used. It barely changes
+  anything: the on-the-day information did not reveal the drop to 50.5%.

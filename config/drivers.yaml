@@ -1,0 +1,63 @@
+# Drivers (PROJECT_PLAN.md Section 5, explainability). Each setting has a one-line rationale.
+# The frozen final gradient boosting model is only read here; nothing is refitted or changed.
+
+model: gbm
+model_rationale: >-
+  The main model named in PROJECT_PLAN.md Section 5, chosen before the test cutoff was read. Its
+  frozen file is loaded with the sha256 check; driver analysis never changes it.
+
+permutation:
+  scoring: average_precision
+  n_repeats: 30
+  spread_percentiles: [2.5, 97.5]
+permutation_rationale: >-
+  Permutation importance on the test cutoff (held-out data): how much PR-AUC drops when one
+  feature's values are shuffled across customers. PR-AUC is the C4 selection metric. 30 shuffles
+  per feature give a mean and a 2.5-97.5 percentile range; the range shows shuffle noise only, not
+  sampling noise or month-to-month change. The seed is config/model.yaml's seed.
+
+partial_dependence:
+  top_n: 4
+  grid_resolution: 20
+  percentiles: [0.05, 0.95]
+partial_dependence_rationale: >-
+  Partial dependence for the 4 most important drivers (PROJECT_PLAN.md Section 5): the average
+  predicted churn probability over the test customers when one feature is set to each grid value.
+  20 grid points between the 5th and 95th percentile keep the curve away from sparse extremes;
+  0/1 features use their two values. Computed by brute force on predict_proba, so the y axis is a
+  probability (on the model's own, too-high scale; see docs/C4_models.md).
+
+statements:
+  - {feature: recency_gap_ratio, op: ">", value: 2, group: "have waited more than twice their usual gap between purchases",
+     rationale: "The plan's example: overdue relative to the customer's own rhythm. 2 = twice the usual gap."}
+  - {feature: recency_days, op: ">", value: 90, group: "have not bought for more than 90 days",
+     rationale: "The same length as the churn window; a plain calendar version of being overdue."}
+  - {feature: single_purchase_day_365d, op: "==", value: 1, group: "bought on only one day in the past year",
+     rationale: "One-off buyers have no buying rhythm yet."}
+  - {feature: orders_365d, op: ">=", value: 10, group: "placed 10 or more orders in the past year",
+     rationale: "Roughly monthly-or-more buyers; a round number near the 90th training percentile (9)."}
+  - {feature: orders_trend_90d, op: "<", value: 0, group: "ordered less in the last 90 days than in the 90 days before",
+     rationale: "Falling activity, the sign of the trend feature."}
+  - {feature: bought_in_peak_365d, op: "==", value: 0, group: "did not buy in the last November-December peak",
+     rationale: "Seasonality flag from PROJECT_PLAN.md Section 4."}
+  - {feature: distinct_products_365d, op: ">=", value: 50, group: "bought 50 or more different products in the past year",
+     rationale: "Breadth of the relationship; a round number for a wide range buyer."}
+  - {feature: tenure_days, op: "<", value: 180, group: "first bought less than 180 days before the cutoff",
+     rationale: "New customers; 180 days = half the lookback. Tenure is a lower bound for the Dec 2009 cohort."}
+  # The next three were added AFTER the importance ranking was computed (NOTES.md): one for the
+  # top-4 driver net_revenue_365d, which no statement above covered, and a repeat-buyer version of
+  # the gap statement and the 5th driver. They use training rows only, like the others.
+  - {feature: net_revenue_365d, op: "<", value: 300, added_after_ranking: true, group: "spent less than £300 in the past 12 months",
+     rationale: "Low-value customers; a round number near the 25th training percentile (£295)."}
+  - {feature: recency_gap_ratio, op: ">", value: 2, among: {feature: single_purchase_day_365d, op: "==", value: 0},
+     added_after_ranking: true, group: "bought on 2+ days in the past year and have waited more than twice their usual gap",
+     rationale: "The gap statement among repeat buyers only: one-day buyers get a filled gap of 365, so their ratio is small although they churn most."}
+  - {feature: latest_gap_days, op: ">", value: 90, among: {feature: single_purchase_day_365d, op: "==", value: 0},
+     added_after_ranking: true, group: "bought on 2+ days in the past year and whose last gap between purchases was over 90 days",
+     rationale: "5th driver, nearly tied with the 4th; repeat buyers only, as one-day buyers get the fill value 365."}
+statements_rationale: >-
+  Plain-language statements are computed on the 6 TRAINING cutoffs pooled (customer-cutoff rows),
+  never on the test cutoff, with per-cutoff minimum and maximum to show stability. Thresholds are
+  round, readable numbers. The first eight were fixed before the importance ranking was computed;
+  the three marked added_after_ranking were added after it (listed as such in the doc). They
+  describe association, not cause.

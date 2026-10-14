@@ -1,0 +1,884 @@
+{
+  "generated_at": "2026-10-14T06:07:08+00:00",
+  "git": {
+    "commit": "a7cacc02fe590d210f65b312e5d27ec6dc553d23",
+    "uncommitted_changes": true
+  },
+  "raw_sha256": "bcbe73b35f5b7babf197fb0cb983a11f5d9ff929078d4aa53d171b1f2df2e980",
+  "test_cutoff": "2011-09-01",
+  "test_snapshot_sha256": "56afd2c32cf14fba86aac7c64c4aec83d0b69bcbf143667932871d3544f71f4f",
+  "model": {
+    "name": "gbm",
+    "file": "gbm.joblib",
+    "sha256": "2dfb635d852d480ad6c617432bea012d0d85285847b0affa3a0dcfe52a3ff146"
+  },
+  "training_cutoffs": [
+    "2010-12-01",
+    "2011-01-01",
+    "2011-02-01",
+    "2011-03-01",
+    "2011-04-01",
+    "2011-05-01"
+  ],
+  "training_rows": 25547,
+  "permutation": {
+    "scoring": "average_precision",
+    "n_repeats": 30,
+    "spread_percentiles": [
+      2.5,
+      97.5
+    ],
+    "seed": 20111201,
+    "baseline_pr_auc": 0.745799868165114
+  },
+  "partial_dependence": {
+    "top_n": 4,
+    "grid_resolution": 20,
+    "percentiles": [
+      0.05,
+      0.95
+    ]
+  },
+  "top_drivers": [
+    "orders_365d",
+    "net_revenue_365d",
+    "tenure_days",
+    "recency_days"
+  ],
+  "importance": [
+    {
+      "rank": 1,
+      "feature": "orders_365d",
+      "mean": 0.0333929082235733,
+      "std": 0.0037611200249566303,
+      "low": 0.027079907829280596,
+      "high": 0.039756070266302346,
+      "repeats": 30,
+      "definition": "Purchase events in the 365 days before the cutoff."
+    },
+    {
+      "rank": 2,
+      "feature": "net_revenue_365d",
+      "mean": 0.01940735013402668,
+      "std": 0.004306291643895104,
+      "low": 0.010572845702874357,
+      "high": 0.0257618508136754,
+      "repeats": 30,
+      "definition": "Net value (£) of all lines in the 365 days before the cutoff (trailing 12-month revenue)."
+    },
+    {
+      "rank": 3,
+      "feature": "tenure_days",
+      "mean": 0.016991706878467284,
+      "std": 0.0038667012465718356,
+      "low": 0.010622833480071259,
+      "high": 0.025076223661723008,
+      "repeats": 30,
+      "definition": "Whole days from the first purchase day in the data to the cutoff date."
+    },
+    {
+      "rank": 4,
+      "feature": "recency_days",
+      "mean": 0.015404045213554289,
+      "std": 0.002976560579159234,
+      "low": 0.010108997091479699,
+      "high": 0.020974000534522245,
+      "repeats": 30,
+      "definition": "Whole days from the last purchase day to the cutoff date (1 = bought the day before)."
+    },
+    {
+      "rank": 5,
+      "feature": "latest_gap_days",
+      "mean": 0.015177496993098127,
+      "std": 0.003346379020205439,
+      "low": 0.009130755952690708,
+      "high": 0.021355896555524036,
+      "repeats": 30,
+      "definition": "Days between the last two purchase days in the last 365 days (365 if only one purchase day)."
+    },
+    {
+      "rank": 6,
+      "feature": "avg_gap_days",
+      "mean": 0.0034246974240672245,
+      "std": 0.0017390547979223255,
+      "low": -2.7234928829530816e-05,
+      "high": 0.00621581145999669,
+      "repeats": 30,
+      "definition": "Mean days between consecutive purchase days in the last 365 days (365 if only one purchase day)."
+    },
+    {
+      "rank": 7,
+      "feature": "net_revenue_180d",
+      "mean": 0.0020796410808587963,
+      "std": 0.001592859609581175,
+      "low": -0.0007399077072928555,
+      "high": 0.005296342265695977,
+      "repeats": 30,
+      "definition": "Net value (£) of all lines in the 180 days before the cutoff."
+    },
+    {
+      "rank": 8,
+      "feature": "recency_gap_ratio",
+      "mean": 0.0018955776345440138,
+      "std": 0.001702626467983758,
+      "low": -0.0006035256582586384,
+      "high": 0.005318748130989393,
+      "repeats": 30,
+      "definition": "recency_days / avg_gap_days (above 1: already waiting longer than the usual gap)."
+    },
+    {
+      "rank": 9,
+      "feature": "return_rate_365d",
+      "mean": 0.001119481916798796,
+      "std": 0.000916144479618889,
+      "low": -0.0006757958009728392,
+      "high": 0.002724174037230622,
+      "repeats": 30,
+      "definition": "Value returned / value bought in the last 365 days; same-day full cancellations count on neither side. Can exceed 1 when earlier purchases are returned."
+    },
+    {
+      "rank": 10,
+      "feature": "bought_in_peak_365d",
+      "mean": 0.0010292473960806347,
+      "std": 0.0006579268034765451,
+      "low": -0.00015175291540419633,
+      "high": 0.0021845665128144335,
+      "repeats": 30,
+      "definition": "1 if the customer bought in the November or December inside the last 365 days."
+    },
+    {
+      "rank": 11,
+      "feature": "latest_gap_ratio",
+      "mean": 0.0009489493190973623,
+      "std": 0.0011624445783028766,
+      "low": -0.0011666073003187643,
+      "high": 0.0030159527495176473,
+      "repeats": 30,
+      "definition": "latest_gap_days / avg_gap_days (above 1: the last gap was longer than usual)."
+    },
+    {
+      "rank": 12,
+      "feature": "orders_180d",
+      "mean": 0.0007095299134354545,
+      "std": 0.0009708971198345959,
+      "low": -0.0009395318093200989,
+      "high": 0.002569486988373834,
+      "repeats": 30,
+      "definition": "Purchase events in the 180 days before the cutoff."
+    },
+    {
+      "rank": 13,
+      "feature": "is_uk",
+      "mean": 0.0004460400074492184,
+      "std": 0.00046597530829528127,
+      "low": -0.0003108111815285891,
+      "high": 0.001262110053894963,
+      "repeats": 30,
+      "definition": "1 if the country on the customer's latest line before the cutoff is the United Kingdom."
+    },
+    {
+      "rank": 14,
+      "feature": "avg_order_value_365d",
+      "mean": 0.0003919611428836974,
+      "std": 0.0013393895564248733,
+      "low": -0.0018288532219043834,
+      "high": 0.002973101344969389,
+      "repeats": 30,
+      "definition": "Value (£) of purchase events in the last 365 days divided by their number."
+    },
+    {
+      "rank": 15,
+      "feature": "net_revenue_trend_90d",
+      "mean": 0.00022820331250953025,
+      "std": 0.0007265295673771089,
+      "low": -0.0010242928093973564,
+      "high": 0.001333778602104904,
+      "repeats": 30,
+      "definition": "Net value (£) in the last 90 days minus net value in the 90 days before them."
+    },
+    {
+      "rank": 16,
+      "feature": "net_revenue_90d",
+      "mean": 0.00011196684354122243,
+      "std": 0.0008468460353314112,
+      "low": -0.0014710609716833023,
+      "high": 0.001807002631503359,
+      "repeats": 30,
+      "definition": "Net value (£) of all lines, purchases minus returns, in the 90 days before the cutoff."
+    },
+    {
+      "rank": 17,
+      "feature": "distinct_products_365d",
+      "mean": 0.00011053313581564177,
+      "std": 0.0013723893855106975,
+      "low": -0.0020727057230444878,
+      "high": 0.0030690376547998716,
+      "repeats": 30,
+      "definition": "Distinct stock codes (upper-cased, stripped) in purchase events in the last 365 days."
+    },
+    {
+      "rank": 18,
+      "feature": "orders_90d",
+      "mean": 4.420177328676722e-05,
+      "std": 0.0003505587666860253,
+      "low": -0.00046888293958238233,
+      "high": 0.0007953808055549652,
+      "repeats": 30,
+      "definition": "Purchase events in the 90 days before the cutoff."
+    },
+    {
+      "rank": 19,
+      "feature": "first_seen_first_data_month",
+      "mean": 3.881598682883662e-05,
+      "std": 8.005723889451399e-05,
+      "low": -0.00010212401125716252,
+      "high": 0.00017049187682427746,
+      "repeats": 30,
+      "definition": "1 if the first purchase is in the first data month (Dec 2009): tenure is a lower bound."
+    },
+    {
+      "rank": 20,
+      "feature": "single_purchase_day_365d",
+      "mean": 0.0,
+      "std": 0.0,
+      "low": 0.0,
+      "high": 0.0,
+      "repeats": 30,
+      "definition": "1 if the customer bought on only one day in the last 365 days (gap features then use fill values)."
+    },
+    {
+      "rank": 21,
+      "feature": "orders_trend_90d",
+      "mean": -0.00016533435903989997,
+      "std": 0.0007078882674209889,
+      "low": -0.0014249201167409937,
+      "high": 0.0011511929244331027,
+      "repeats": 30,
+      "definition": "Purchase events in the last 90 days minus those in the 90 days before them."
+    }
+  ],
+  "partial_dependence_values": [
+    {
+      "feature": "orders_365d",
+      "value": 1.0,
+      "mean_predicted": 0.7026717019960736
+    },
+    {
+      "feature": "orders_365d",
+      "value": 1.631578947368421,
+      "mean_predicted": 0.7026717019960736
+    },
+    {
+      "feature": "orders_365d",
+      "value": 2.263157894736842,
+      "mean_predicted": 0.7026717019960736
+    },
+    {
+      "feature": "orders_365d",
+      "value": 2.894736842105263,
+      "mean_predicted": 0.6696002211171311
+    },
+    {
+      "feature": "orders_365d",
+      "value": 3.526315789473684,
+      "mean_predicted": 0.6208852860297678
+    },
+    {
+      "feature": "orders_365d",
+      "value": 4.157894736842105,
+      "mean_predicted": 0.6208852860297678
+    },
+    {
+      "feature": "orders_365d",
+      "value": 4.789473684210526,
+      "mean_predicted": 0.568638148627732
+    },
+    {
+      "feature": "orders_365d",
+      "value": 5.421052631578947,
+      "mean_predicted": 0.568638148627732
+    },
+    {
+      "feature": "orders_365d",
+      "value": 6.052631578947368,
+      "mean_predicted": 0.5172586353164332
+    },
+    {
+      "feature": "orders_365d",
+      "value": 6.684210526315789,
+      "mean_predicted": 0.5115025480872567
+    },
+    {
+      "feature": "orders_365d",
+      "value": 7.315789473684211,
+      "mean_predicted": 0.5115025480872567
+    },
+    {
+      "feature": "orders_365d",
+      "value": 7.947368421052631,
+      "mean_predicted": 0.46559270909104317
+    },
+    {
+      "feature": "orders_365d",
+      "value": 8.578947368421051,
+      "mean_predicted": 0.4537473928717888
+    },
+    {
+      "feature": "orders_365d",
+      "value": 9.210526315789473,
+      "mean_predicted": 0.4537473928717888
+    },
+    {
+      "feature": "orders_365d",
+      "value": 9.842105263157894,
+      "mean_predicted": 0.4507407667101112
+    },
+    {
+      "feature": "orders_365d",
+      "value": 10.473684210526315,
+      "mean_predicted": 0.4507407667101112
+    },
+    {
+      "feature": "orders_365d",
+      "value": 11.105263157894736,
+      "mean_predicted": 0.4385677758065711
+    },
+    {
+      "feature": "orders_365d",
+      "value": 11.736842105263158,
+      "mean_predicted": 0.4385677758065711
+    },
+    {
+      "feature": "orders_365d",
+      "value": 12.368421052631579,
+      "mean_predicted": 0.4385677758065711
+    },
+    {
+      "feature": "orders_365d",
+      "value": 13.0,
+      "mean_predicted": 0.41810805627018255
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 107.2268,
+      "mean_predicted": 0.6873796836692575
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 395.27844210526314,
+      "mean_predicted": 0.6709204888146363
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 683.3300842105263,
+      "mean_predicted": 0.6417144972059761
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 971.3817263157894,
+      "mean_predicted": 0.6370511500214396
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 1259.4333684210524,
+      "mean_predicted": 0.6198517380269011
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 1547.4850105263154,
+      "mean_predicted": 0.6199962600159685
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 1835.5366526315786,
+      "mean_predicted": 0.6191629363601436
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 2123.588294736842,
+      "mean_predicted": 0.6183871370890195
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 2411.639936842105,
+      "mean_predicted": 0.6173855904172433
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 2699.691578947368,
+      "mean_predicted": 0.6166731824928798
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 2987.743221052631,
+      "mean_predicted": 0.615432261088943
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 3275.7948631578943,
+      "mean_predicted": 0.615432261088943
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 3563.8465052631573,
+      "mean_predicted": 0.608380194496464
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 3851.8981473684203,
+      "mean_predicted": 0.603654014608305
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 4139.949789473684,
+      "mean_predicted": 0.603654014608305
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 4428.001431578947,
+      "mean_predicted": 0.603654014608305
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 4716.05307368421,
+      "mean_predicted": 0.603654014608305
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 5004.104715789474,
+      "mean_predicted": 0.603654014608305
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 5292.156357894736,
+      "mean_predicted": 0.603654014608305
+    },
+    {
+      "feature": "net_revenue_365d",
+      "value": 5580.208,
+      "mean_predicted": 0.603654014608305
+    },
+    {
+      "feature": "tenure_days",
+      "value": 65.0,
+      "mean_predicted": 0.6723924247843354
+    },
+    {
+      "feature": "tenure_days",
+      "value": 95.10526315789474,
+      "mean_predicted": 0.6835572940520351
+    },
+    {
+      "feature": "tenure_days",
+      "value": 125.21052631578948,
+      "mean_predicted": 0.6835572940520351
+    },
+    {
+      "feature": "tenure_days",
+      "value": 155.31578947368422,
+      "mean_predicted": 0.683381226271536
+    },
+    {
+      "feature": "tenure_days",
+      "value": 185.42105263157896,
+      "mean_predicted": 0.683381226271536
+    },
+    {
+      "feature": "tenure_days",
+      "value": 215.52631578947367,
+      "mean_predicted": 0.6935021209408169
+    },
+    {
+      "feature": "tenure_days",
+      "value": 245.6315789473684,
+      "mean_predicted": 0.6935021209408169
+    },
+    {
+      "feature": "tenure_days",
+      "value": 275.7368421052631,
+      "mean_predicted": 0.6924963298885977
+    },
+    {
+      "feature": "tenure_days",
+      "value": 305.8421052631579,
+      "mean_predicted": 0.680906056438519
+    },
+    {
+      "feature": "tenure_days",
+      "value": 335.9473684210526,
+      "mean_predicted": 0.6650791262434212
+    },
+    {
+      "feature": "tenure_days",
+      "value": 366.05263157894734,
+      "mean_predicted": 0.6470724790790832
+    },
+    {
+      "feature": "tenure_days",
+      "value": 396.1578947368421,
+      "mean_predicted": 0.6327292262178177
+    },
+    {
+      "feature": "tenure_days",
+      "value": 426.2631578947368,
+      "mean_predicted": 0.6297797371750482
+    },
+    {
+      "feature": "tenure_days",
+      "value": 456.36842105263156,
+      "mean_predicted": 0.618586595777861
+    },
+    {
+      "feature": "tenure_days",
+      "value": 486.4736842105263,
+      "mean_predicted": 0.618586595777861
+    },
+    {
+      "feature": "tenure_days",
+      "value": 516.578947368421,
+      "mean_predicted": 0.618586595777861
+    },
+    {
+      "feature": "tenure_days",
+      "value": 546.6842105263158,
+      "mean_predicted": 0.618586595777861
+    },
+    {
+      "feature": "tenure_days",
+      "value": 576.7894736842105,
+      "mean_predicted": 0.618586595777861
+    },
+    {
+      "feature": "tenure_days",
+      "value": 606.8947368421052,
+      "mean_predicted": 0.618586595777861
+    },
+    {
+      "feature": "tenure_days",
+      "value": 637.0,
+      "mean_predicted": 0.618586595777861
+    },
+    {
+      "feature": "recency_days",
+      "value": 8.0,
+      "mean_predicted": 0.5929757550277628
+    },
+    {
+      "feature": "recency_days",
+      "value": 25.151578947368378,
+      "mean_predicted": 0.5995664748335282
+    },
+    {
+      "feature": "recency_days",
+      "value": 42.303157894736756,
+      "mean_predicted": 0.6190563232424586
+    },
+    {
+      "feature": "recency_days",
+      "value": 59.454736842105135,
+      "mean_predicted": 0.6399668035928475
+    },
+    {
+      "feature": "recency_days",
+      "value": 76.60631578947351,
+      "mean_predicted": 0.6400703957998345
+    },
+    {
+      "feature": "recency_days",
+      "value": 93.75789473684189,
+      "mean_predicted": 0.651683250729101
+    },
+    {
+      "feature": "recency_days",
+      "value": 110.90947368421027,
+      "mean_predicted": 0.652110185381468
+    },
+    {
+      "feature": "recency_days",
+      "value": 128.06105263157866,
+      "mean_predicted": 0.652110185381468
+    },
+    {
+      "feature": "recency_days",
+      "value": 145.21263157894703,
+      "mean_predicted": 0.6609722975369309
+    },
+    {
+      "feature": "recency_days",
+      "value": 162.3642105263154,
+      "mean_predicted": 0.6652559839427143
+    },
+    {
+      "feature": "recency_days",
+      "value": 179.51578947368378,
+      "mean_predicted": 0.6652559839427143
+    },
+    {
+      "feature": "recency_days",
+      "value": 196.66736842105217,
+      "mean_predicted": 0.6666402061222614
+    },
+    {
+      "feature": "recency_days",
+      "value": 213.81894736842054,
+      "mean_predicted": 0.6666402061222614
+    },
+    {
+      "feature": "recency_days",
+      "value": 230.9705263157889,
+      "mean_predicted": 0.6666402061222614
+    },
+    {
+      "feature": "recency_days",
+      "value": 248.1221052631573,
+      "mean_predicted": 0.6666402061222614
+    },
+    {
+      "feature": "recency_days",
+      "value": 265.2736842105257,
+      "mean_predicted": 0.6666402061222614
+    },
+    {
+      "feature": "recency_days",
+      "value": 282.42526315789405,
+      "mean_predicted": 0.6666402061222614
+    },
+    {
+      "feature": "recency_days",
+      "value": 299.5768421052624,
+      "mean_predicted": 0.6666402061222614
+    },
+    {
+      "feature": "recency_days",
+      "value": 316.7284210526308,
+      "mean_predicted": 0.6666402061222614
+    },
+    {
+      "feature": "recency_days",
+      "value": 333.8799999999992,
+      "mean_predicted": 0.6666402061222614
+    }
+  ],
+  "statements": [
+    {
+      "feature": "recency_gap_ratio",
+      "condition": "recency_gap_ratio > 2",
+      "added_after_ranking": false,
+      "group": "have waited more than twice their usual gap between purchases",
+      "driver_rank": 8,
+      "is_top_driver": false,
+      "rows_in": 4303,
+      "churned_in": 2830,
+      "churn_in": 0.6576806878921683,
+      "rows_out": 21244,
+      "churned_out": 13595,
+      "churn_out": 0.6399453963472039,
+      "share_in": 0.16843464986104043,
+      "ratio": 1.027713757527122,
+      "churn_in_min": 0.623030303030303,
+      "churn_in_max": 0.7175925925925926,
+      "churn_out_min": 0.5994749124854143,
+      "churn_out_max": 0.6650246305418719
+    },
+    {
+      "feature": "recency_days",
+      "condition": "recency_days > 90",
+      "added_after_ranking": false,
+      "group": "have not bought for more than 90 days",
+      "driver_rank": 4,
+      "is_top_driver": true,
+      "rows_in": 12518,
+      "churned_in": 9856,
+      "churn_in": 0.7873462214411248,
+      "rows_out": 13029,
+      "churned_out": 6569,
+      "churn_out": 0.5041829764371786,
+      "share_in": 0.48999882569381925,
+      "ratio": 1.56162793715275,
+      "churn_in_min": 0.7599844901124467,
+      "churn_in_max": 0.8549562682215743,
+      "churn_out_min": 0.4057203389830508,
+      "churn_out_max": 0.5789106145251397
+    },
+    {
+      "feature": "single_purchase_day_365d",
+      "condition": "single_purchase_day_365d == 1",
+      "added_after_ranking": false,
+      "group": "bought on only one day in the past year",
+      "driver_rank": 20,
+      "is_top_driver": false,
+      "rows_in": 9309,
+      "churned_in": 7891,
+      "churn_in": 0.8476742936942744,
+      "rows_out": 16238,
+      "churned_out": 8534,
+      "churn_out": 0.5255573346471241,
+      "share_in": 0.36438720789133755,
+      "ratio": 1.6129054582854028,
+      "churn_in_min": 0.8236009732360098,
+      "churn_in_max": 0.8786440677966102,
+      "churn_out_min": 0.4837261503928171,
+      "churn_out_max": 0.5566556655665567
+    },
+    {
+      "feature": "orders_365d",
+      "condition": "orders_365d >= 10",
+      "added_after_ranking": false,
+      "group": "placed 10 or more orders in the past year",
+      "driver_rank": 1,
+      "is_top_driver": true,
+      "rows_in": 2150,
+      "churned_in": 278,
+      "churn_in": 0.12930232558139534,
+      "rows_out": 23397,
+      "churned_out": 16147,
+      "churn_out": 0.6901312134034278,
+      "share_in": 0.08415860962148197,
+      "ratio": 0.18735904574397144,
+      "churn_in_min": 0.09620991253644315,
+      "churn_in_max": 0.16348773841961853,
+      "churn_out_min": 0.657775541016608,
+      "churn_out_max": 0.718122555410691
+    },
+    {
+      "feature": "orders_trend_90d",
+      "condition": "orders_trend_90d < 0",
+      "added_after_ranking": false,
+      "group": "ordered less in the last 90 days than in the 90 days before",
+      "driver_rank": 21,
+      "is_top_driver": false,
+      "rows_in": 9430,
+      "churned_in": 5846,
+      "churn_in": 0.6199363732767762,
+      "rows_out": 16117,
+      "churned_out": 10579,
+      "churn_out": 0.6563876651982379,
+      "share_in": 0.36912357615375585,
+      "ratio": 0.9444668237169678,
+      "churn_in_min": 0.5714285714285714,
+      "churn_in_max": 0.6714443219404631,
+      "churn_out_min": 0.6354351687388987,
+      "churn_out_max": 0.6736641221374046
+    },
+    {
+      "feature": "bought_in_peak_365d",
+      "condition": "bought_in_peak_365d == 0",
+      "added_after_ranking": false,
+      "group": "did not buy in the last November-December peak",
+      "driver_rank": 10,
+      "is_top_driver": false,
+      "rows_in": 13633,
+      "churned_in": 10264,
+      "churn_in": 0.752879043497396,
+      "rows_out": 11914,
+      "churned_out": 6161,
+      "churn_out": 0.5171227127748866,
+      "share_in": 0.5336438720789134,
+      "ratio": 1.4559001662437878,
+      "churn_in_min": 0.704381114419396,
+      "churn_in_max": 0.7973977695167286,
+      "churn_out_min": 0.5,
+      "churn_out_max": 0.5350966429298067
+    },
+    {
+      "feature": "distinct_products_365d",
+      "condition": "distinct_products_365d >= 50",
+      "added_after_ranking": false,
+      "group": "bought 50 or more different products in the past year",
+      "driver_rank": 17,
+      "is_top_driver": false,
+      "rows_in": 10007,
+      "churned_in": 4606,
+      "churn_in": 0.46027780553612474,
+      "rows_out": 15540,
+      "churned_out": 11819,
+      "churn_out": 0.7605534105534105,
+      "share_in": 0.39170939836380003,
+      "ratio": 0.6051880106634554,
+      "churn_in_min": 0.4246491763270287,
+      "churn_in_max": 0.49110320284697506,
+      "churn_out_min": 0.7285287528005975,
+      "churn_out_max": 0.7890779580530273
+    },
+    {
+      "feature": "tenure_days",
+      "condition": "tenure_days < 180",
+      "added_after_ranking": false,
+      "group": "first bought less than 180 days before the cutoff",
+      "driver_rank": 3,
+      "is_top_driver": true,
+      "rows_in": 7251,
+      "churned_in": 5373,
+      "churn_in": 0.7410012412081092,
+      "rows_out": 18296,
+      "churned_out": 11052,
+      "churn_out": 0.6040664626147791,
+      "share_in": 0.2838298038908678,
+      "ratio": 1.2266882653948215,
+      "churn_in_min": 0.6837209302325581,
+      "churn_in_max": 0.7792012057272042,
+      "churn_out_min": 0.5875040889761204,
+      "churn_out_max": 0.6233862043526374
+    },
+    {
+      "feature": "net_revenue_365d",
+      "condition": "net_revenue_365d < 300",
+      "added_after_ranking": true,
+      "group": "spent less than £300 in the past 12 months",
+      "driver_rank": 2,
+      "is_top_driver": true,
+      "rows_in": 6531,
+      "churned_in": 5569,
+      "churn_in": 0.8527024957893126,
+      "rows_out": 19016,
+      "churned_out": 10856,
+      "churn_out": 0.5708876735380732,
+      "share_in": 0.25564645555251103,
+      "ratio": 1.4936432074364008,
+      "churn_in_min": 0.8266666666666667,
+      "churn_in_max": 0.8773764258555133,
+      "churn_out_min": 0.5340445560087856,
+      "churn_out_max": 0.6003174603174604
+    },
+    {
+      "feature": "recency_gap_ratio",
+      "condition": "recency_gap_ratio > 2 among single_purchase_day_365d == 0",
+      "added_after_ranking": true,
+      "group": "bought on 2+ days in the past year and have waited more than twice their usual gap",
+      "driver_rank": 8,
+      "is_top_driver": false,
+      "rows_in": 4303,
+      "churned_in": 2830,
+      "churn_in": 0.6576806878921683,
+      "rows_out": 11935,
+      "churned_out": 5704,
+      "churn_out": 0.4779220779220779,
+      "share_in": 0.2649956891242764,
+      "ratio": 1.3761253523830694,
+      "churn_in_min": 0.623030303030303,
+      "churn_in_max": 0.7175925925925926,
+      "churn_out_min": 0.3929372197309417,
+      "churn_out_max": 0.5244271508862949
+    },
+    {
+      "feature": "latest_gap_days",
+      "condition": "latest_gap_days > 90 among single_purchase_day_365d == 0",
+      "added_after_ranking": true,
+      "group": "bought on 2+ days in the past year and whose last gap between purchases was over 90 days",
+      "driver_rank": 5,
+      "is_top_driver": false,
+      "rows_in": 4934,
+      "churned_in": 3175,
+      "churn_in": 0.6434941224158898,
+      "rows_out": 11304,
+      "churned_out": 5359,
+      "churn_out": 0.4740799716914367,
+      "share_in": 0.3038551545756867,
+      "ratio": 1.3573535286040712,
+      "churn_in_min": 0.5510869565217391,
+      "churn_in_max": 0.7150610583446404,
+      "churn_out_min": 0.44837421563034796,
+      "churn_out_max": 0.4979899497487437
+    }
+  ]
+}

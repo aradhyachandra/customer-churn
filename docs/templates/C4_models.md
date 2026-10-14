@@ -118,7 +118,6 @@ saved model file in `data/processed/models/`).
 
 ## Test results (part B)
 
-> **NOT RUN YET.** This section stays empty until part B runs `python -m churn.run_c4_test` once,
-> from a clean, committed working tree, with the frozen models above. That script writes
-> `results/c4_test_metrics.json` (with the git SHA and data checksums) and refuses to run a second
-> time. The test-cutoff metrics table, counts, calibration and base rate go here.
+> Filled from the saved one-shot result `results/c4_test_metrics.json` by
+> `python -m churn.render_c4_test` (template `docs/templates/C4_test_results.md`), which scores
+> nothing. Rerunning `python -m churn.run_c4` resets this section; rerun the renderer after it.
