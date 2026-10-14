@@ -1,0 +1,61 @@
+# C6: findings report and dashboard. Presentation choices only: nothing here changes a model, a
+# label or an assumption in config/business.yaml. Each setting has a one-line rationale.
+
+profile_features:
+  recency_days: {label: "days since the last purchase", format: days}
+  orders_365d: {label: "orders in the past year", format: count}
+  net_revenue_365d: {label: "net revenue in the past 12 months", format: gbp}
+  avg_order_value_365d: {label: "average order value", format: gbp}
+  tenure_days: {label: "days since the first purchase", format: days}
+  avg_gap_days: {label: "usual days between purchases", format: days, repeat_buyers_only: true}
+  latest_gap_days: {label: "days between the last two purchases", format: days, repeat_buyers_only: true}
+  distinct_products_365d: {label: "different products bought in the past year", format: count}
+  return_rate_365d: {label: "share of value returned in the past year", format: pct}
+profile_features_rationale: >-
+  The risk list describes each customer by the 3 of these features where they sit furthest from
+  the median customer (largest share of customers strictly below or strictly above them). They
+  include the top drivers in docs/C5_drivers_and_business.md plus a few easy-to-read habits. This
+  is a description of the customer, not the model's reason for the score. Features marked
+  repeat_buyers_only (the gaps) are skipped for customers who bought on only one day, and compared
+  only with repeat buyers, because a one-day buyer's gap is a fill value of 365, not a real gap.
+
+profile_reference: test_cutoff_active_customers
+profile_reference_rationale: >-
+  "The median customer" is the median over the active customers at the test cutoff (2011-09-01).
+  Every feature uses data from before the cutoff, so these medians were known on the day.
+
+profile_count: 3
+profile_count_rationale: >-
+  Three short phrases fit in one table cell and are enough to see what makes a customer stand out.
+
+segments:
+  is_uk:
+    title: "Country group"
+    labels: {1: "United Kingdom", 0: "Rest of the world"}
+  net_revenue_365d:
+    title: "Net revenue in the past 12 months"
+    edges: [-.inf, 300, 1000, 5000, .inf]
+    labels: ["Under £300", "£300 to £1,000", "£1,000 to £5,000", "£5,000 and over"]
+  orders_365d:
+    title: "Orders in the past year"
+    edges: [1, 2, 5, 10, .inf]
+    labels: ["1", "2 to 4", "5 to 9", "10 or more"]
+  tenure_days:
+    title: "Time since first purchase"
+    edges: [0, 180, 365, .inf]
+    labels: ["Under 180 days", "180 to 364 days", "365 days or more"]
+segments_rationale: >-
+  Churn by segment for the dashboard and report, on the 6 training cutoffs only (never the test
+  cutoff). Bands are round numbers in the units a manager uses; £300 and 10 orders match the
+  driver statements in config/drivers.yaml. Bands include the lower edge and exclude the upper one.
+
+flat_optimum_share: 0.90
+flat_optimum_share_rationale: >-
+  To show how flat the central campaign curve is near its best size, the report gives the range
+  of campaign sizes whose expected net benefit is at least 90% of the best. 90% is a round,
+  common "close to the best" line; it describes the curve and chooses nothing.
+
+value_concentration_shares: [0.01, 0.10]
+value_concentration_shares_rationale: >-
+  Share of the test-cutoff customers' 12-month net revenue held by the top 1% and top 10% of
+  customers, to show how much a few large (wholesale-like) accounts weigh in every £ total.

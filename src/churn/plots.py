@@ -201,3 +201,27 @@ def campaign_plot(central, band_low, band_high, best_size, path, title, central_
     ax.legend(frameon=False, fontsize=8.5, loc="upper right", labelcolor=INK)
     _tidy(ax)
     _save(fig, path)
+
+
+def predicted_vs_actual_plot(table, labels, path, title):
+    """Paired bars per group: mean predicted churn (rescaled) next to the churn rate actually seen.
+    table: rows of churn.findings.predicted_vs_actual; labels: {group: axis label}."""
+    t = table.set_index("group").loc[list(labels)]
+    x = np.arange(len(t))
+    width = 0.36
+    fig, ax = plt.subplots(figsize=(7.5, 4.4), dpi=150)
+    series = (("mean_p_rescaled", "Mean predicted churn (rescaled, known on the day)", SERIES[0], -1),
+              ("observed_churn_rate", "Churn actually seen (after the fact)", SERIES[1], 1))
+    for column, label, color, side in series:
+        bars = ax.bar(x + side * (width / 2 + 0.01), t[column], width=width, color=color, label=label)
+        ax.bar_label(bars, labels=[f"{v:.0%}" for v in t[column]], padding=3, fontsize=8.5, color=INK)
+    ax.set_xticks(x, [f"{labels[g]}\n({n:,} customers)" for g, n in zip(t.index, t["customers"])],
+                  fontsize=8.5, color=INK)
+    ax.set_ylim(0, 1)
+    ax.yaxis.set_major_formatter(lambda v, _: f"{v:.0%}")
+    ax.set_ylabel("Share of customers", fontsize=9, color=INK)
+    ax.set_title(title, fontsize=12, color=INK, loc="left", pad=10)
+    ax.legend(frameon=False, fontsize=8.5, loc="upper right", labelcolor=INK)
+    _tidy(ax)
+    ax.grid(axis="x", visible=False)
+    _save(fig, path)

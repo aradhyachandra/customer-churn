@@ -64,3 +64,13 @@ paths:
   c5_campaign_plot: results/figures/c5_campaign_net_benefit.png
   c5_doc_template: docs/templates/C5_drivers_and_business.md
   c5_doc_output: docs/C5_drivers_and_business.md
+  # C6 outputs (report, dashboard data, README; all committable)
+  c6_report: results/c6_report.json
+  c6_test_scores: results/c6_test_scores.csv                 # dashboard risk list and calculator
+  c6_predicted_vs_actual: results/c6_predicted_vs_actual.csv
+  c6_predicted_vs_actual_plot: results/figures/c6_predicted_vs_actual.png
+  c6_segments_training: results/c6_segments_training.csv
+  c6_report_template: docs/templates/REPORT.md
+  c6_report_output: docs/REPORT.md
+  c6_readme_template: docs/templates/README.md
+  c6_readme_output: README.md

@@ -69,6 +69,11 @@
   mid-probability customers, where the over-prediction is relatively largest. This is why the
   money estimate shrinks with actual outcomes (GBP 22,621 expected vs GBP 7,473). The central-case
   curve is also flat near its peak, so campaign size matters less than the assumptions.
+  **Computed and saved in C6** (results/c6_predicted_vs_actual.csv, figure
+  results/figures/c6_predicted_vs_actual.png, docs/REPORT.md Section 7): mean rescaled p 51.9% vs
+  35.9% churned on the chosen list (ratio 1.45), 63.4% vs 50.5% for everyone (1.26), 69.9% vs 58.7%
+  for the rest (1.19). The reviewer's figures are confirmed. Flatness, also computed: every size
+  from 812 to 2,453 is within 90% of the best (results/c6_report.json).
 - **Driver statements added after the ranking (C5):** three statements in config/drivers.yaml
   (net_revenue_365d < 300; recency_gap_ratio > 2 and latest_gap_days > 90 among repeat buyers)
   were added after the permutation ranking was seen: no statement covered the #2 driver, and the
@@ -78,7 +83,30 @@
   (order/revenue windows, gap features; single_purchase_day_365d shows 0.0000 because it nearly
   equals orders_365d = 1). Ranks 4 and 5 are tied within noise. The spread is over shuffles only.
 
+- **Risk-list phrases (C6):** "what stands out" compares each customer with the median active
+  customer at the test cutoff (config/report.yaml). It is a description, not the model's reason for
+  the score (the dashboard says so). Gap features are compared with repeat buyers only. Confirm
+  this framing is acceptable; per-customer model explanations (e.g. SHAP) were not added, to avoid
+  new modelling in C6.
+- **Streamlit pinned at 1.58.0, not the latest (C6):** newer releases require pyarrow < 26, and
+  pyarrow 25 writes different parquet bytes (the writer version is stored in the file), which would
+  change the test snapshot's sha256 that run_c5/run_c6 check against the one-shot test record.
+  Checked: a pyarrow-25 rewrite of the test snapshot has a different sha256.
+- **Clean-clone check used an uncommitted overlay (C6):** C6 was not committed when the check ran,
+  so the clone was HEAD (7d3f0b8) plus the working-tree files copied in (docs/C6_reproducibility.md).
+  Re-running it after C6 is committed would make it a pure clone.
+- **Wholesale concentration (C6):** the top 1% of test-cutoff customers hold 29.0% of 12-month
+  revenue and the top 10% hold 59.9% (results/c6_report.json). Results are not split into
+  wholesale and retail: the data have no such label.
+
 ## Decisions
+
+- **C6 report and README are rendered (2026-10-14):** `python -m churn.run_c6` fills docs/REPORT.md
+  and README.md from docs/templates/, using saved results plus the new C6 files, which it saves
+  first. It loads the frozen boosting model only to predict (same guards as run_c5) and checks that
+  scores, rescaling and the central campaign equal results/c5_business.json. The dashboard reads
+  committed files only; results/c6_test_scores.csv keeps full-precision probabilities so the
+  calculator matches results/c5_campaign_scenarios.csv exactly (tested at all 54 grid points).
 
 - **Offer cost (C5, adopted by Aradhya 2026-10-14):** GBP 5 / 15 / 40 per contacted customer
   (config/business.yaml). This is the author's judgement, not data: central GBP 15 is about 5% of the median

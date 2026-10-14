@@ -158,7 +158,7 @@ validation vs test side by side, base rates, counts, test calibration
 (results/figures/c4_test_calibration.png) and the seasonal TO VERIFY hypothesis. The test was not
 rerun. New files: results/c4_test_summary.csv, results/c4_test_writeup.json.
 
-## C5: Drivers and business layer (done 2026-10-14, uncommitted, awaiting review)
+## C5: Drivers and business layer (done 2026-10-14, committed 5ddf024; offer cost adopted 7d3f0b8)
 
 Built:
 - `config/drivers.yaml`: permutation settings (PR-AUC, 30 shuffles), partial dependence (top 4,
@@ -198,5 +198,56 @@ How to run:
 Not done: nothing reran churn.run_c4_test, run_c4 or refit any model (model files unchanged, sha256
 checked). Open items: NOTES.md (TO VERIFY, C4 part B and C5 entries).
 
-## Next: C6 (after review and commit of C5)
-Report, dashboard, README (PROJECT_PLAN.md Section 8).
+## C6: Report, dashboard, README, clean-clone check (done 2026-10-14, uncommitted, awaiting review)
+
+Built:
+- `config/report.yaml`: risk-list profile features and wording, median reference (test-cutoff
+  active customers), segment bands (training cutoffs), the 90% "near the best" line for the
+  campaign curve, value-concentration shares. All with rationales (tested).
+- `src/churn/profiles.py` (each customer's most unusual features vs the median, in plain words),
+  `src/churn/findings.py` (churn by segment, predicted vs actual by group, near-best sizes, value
+  concentration), `src/churn/dashboard.py` (data loading from committed files, campaign
+  calculator), `src/churn/compare_runs.py` (results comparison for the clean-clone check),
+  `plots.predicted_vs_actual_plot`.
+- `src/churn/run_c6.py`: same frozen-model guards as run_c5, plus checks that scores, rescaling,
+  the central campaign and its churner count equal results/c5_business.json. Saves the new
+  results first, then renders docs/REPORT.md and README.md from docs/templates/.
+- `app/streamlit_app.py`: tabs Retention (heatmap), Churn by segment (training cutoffs), Risk
+  list at 2011-09-01 (rescaled p, value, expected benefit, 3 "what stands out" phrases; the
+  after-the-fact outcome is hidden behind a labelled checkbox), Campaign calculator (sliders for
+  margin, save rate, offer cost; best size, benefit, spend, revenue kept, curve; all labelled as
+  estimates). Runs from committed files only.
+- `LICENSE` (MIT). `requirements.txt`: streamlit 1.58.0 and dependencies pinned (see NOTES.md for
+  why not the latest).
+
+New outputs (committable): results/c6_report.json, c6_test_scores.csv (4,323 rows, about 0.6 MB),
+c6_predicted_vs_actual.csv, c6_segments_training.csv, c6_clean_clone_check.json,
+results/figures/c6_predicted_vs_actual.png; docs/REPORT.md, docs/C6_reproducibility.md, README.md.
+
+Headline new figure: on the central-case list (1,567 customers) mean rescaled p was 51.9% vs 35.9%
+churned (ratio 1.45), against 63.4% vs 50.5% for everyone (1.26). The campaign curve is flat: any
+size from 812 to 2,453 is within 90% of the best expected benefit.
+
+Clean-clone check (docs/C6_reproducibility.md): HEAD 7d3f0b8 plus the uncommitted C6 files, fresh
+venv, run_c1..run_c6: 35/35 results files match (26 byte-identical, 9 equal apart from run info),
+all 3 model sha256 match the frozen manifest, test snapshot sha256 matches, tests pass. Peak memory
+about 1 GB.
+
+Tests: 202 unit tests (`pytest`; new: test_profiles.py, test_findings.py, test_dashboard.py with
+the calculator checked at all 54 saved scenario rows and an AppTest run of the app,
+test_compare_runs.py, test_run_c6.py, one plot test), 14 real-data checks. All pass.
+
+How to run:
+```bash
+.venv/bin/python -m churn.run_c6
+.venv/bin/streamlit run app/streamlit_app.py
+.venv/bin/python -m pytest && .venv/bin/python -m pytest -m realdata
+```
+
+Not done: churn.run_c4_test was not run (here or in the clone); no model was refitted in the
+working copy (run_c4 ran only inside the temporary clone); nothing tuned or committed.
+
+## Project status: complete (all milestones C1-C6), pending review and commit of C6
+
+Open items for the author: NOTES.md (TO VERIFY), especially the seasonal hypothesis, the untested
+margin/save rate/offer cost, and the 12-month value horizon.

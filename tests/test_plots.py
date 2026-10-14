@@ -55,3 +55,14 @@ def test_campaign_plot_writes_png(tmp_path):
     campaign_plot([0, 19, 20, 15.6], [0, 5, 4, -2], [0, 30, 40, 38], best_size=2, path=path, title="t",
                   central_label="central", band_label="range")
     assert path.read_bytes()[:8] == PNG
+
+
+def test_predicted_vs_actual_plot_writes_png(tmp_path):
+    from churn.findings import predicted_vs_actual
+    from churn.plots import predicted_vs_actual_plot
+
+    t = predicted_vs_actual([0.9, 0.5, 0.4, 0.2], [0.8, 0.4, 0.3, 0.1], [1, 0, 1, 0], [True, True, False, False])
+    path = tmp_path / "fig" / "pva.png"
+    predicted_vs_actual_plot(t, {"everyone": "Everyone", "chosen": "Chosen list", "not_chosen": "Not chosen"},
+                             path, title="Predicted vs actual")
+    assert path.read_bytes()[:8] == PNG

@@ -1,0 +1,4 @@
+group,customers,churned,mean_p_model,mean_p_rescaled,observed_churn_rate,gap_points_model,gap_points_rescaled,ratio_rescaled
+everyone,4323,2181,0.640756,0.633904,0.504511,13.624504,12.939304,1.256472
+chosen,1567,562,0.526768,0.518820,0.358647,16.812119,16.017316,1.446604
+not_chosen,2756,1619,0.705567,0.699338,0.587446,11.812097,11.189215,1.190472

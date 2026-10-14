@@ -1,0 +1,203 @@
+{
+  "generated_at": "2026-10-14T06:25:29+00:00",
+  "git": {
+    "commit": "7d3f0b8d7f85ad7dbe56e398c1e01a191c8c3c37",
+    "uncommitted_changes": true
+  },
+  "raw_sha256": "bcbe73b35f5b7babf197fb0cb983a11f5d9ff929078d4aa53d171b1f2df2e980",
+  "test_cutoff": "2011-09-01",
+  "model": {
+    "name": "gbm",
+    "file": "gbm.joblib",
+    "sha256": "2dfb635d852d480ad6c617432bea012d0d85285847b0affa3a0dcfe52a3ff146"
+  },
+  "after_the_fact_note": "observed churn columns use test outcomes, unknown on the decision day",
+  "predicted_vs_actual": [
+    {
+      "group": "everyone",
+      "customers": 4323,
+      "churned": 2181,
+      "mean_p_model": 0.6407557950699067,
+      "mean_p_rescaled": 0.6339037927844591,
+      "observed_churn_rate": 0.5045107564191533,
+      "gap_points_model": 13.624503865075333,
+      "gap_points_rescaled": 12.939303636530575,
+      "ratio_rescaled": 1.2564723045425112
+    },
+    {
+      "group": "chosen",
+      "customers": 1567,
+      "churned": 562,
+      "mean_p_model": 0.526768289373204,
+      "mean_p_rescaled": 0.5188202518612625,
+      "observed_churn_rate": 0.35864709636247605,
+      "gap_points_model": 16.81211930107279,
+      "gap_points_rescaled": 16.017315549878642,
+      "ratio_rescaled": 1.4466037983391429
+    },
+    {
+      "group": "not_chosen",
+      "customers": 2756,
+      "churned": 1619,
+      "mean_p_model": 0.7055665430476763,
+      "mean_p_rescaled": 0.6993377218942738,
+      "observed_churn_rate": 0.5874455732946299,
+      "gap_points_model": 11.812096975304643,
+      "gap_points_rescaled": 11.189214859964391,
+      "ratio_rescaled": 1.1904723666094
+    }
+  ],
+  "near_best_sizes_central_b": {
+    "best_size": 1567,
+    "best": 22621.326349618783,
+    "share": 0.9,
+    "min_size": 812,
+    "max_size": 2453
+  },
+  "value_concentration": [
+    {
+      "top_share_of_customers": 0.01,
+      "customers": 44,
+      "value_share": 0.2901671601994171
+    },
+    {
+      "top_share_of_customers": 0.1,
+      "customers": 433,
+      "value_share": 0.5989535403268426
+    }
+  ],
+  "segments_training": [
+    {
+      "segment": "is_uk",
+      "title": "Country group",
+      "group": "United Kingdom",
+      "rows": 23485,
+      "churned": 15194,
+      "churn_rate": 0.6469661486054928,
+      "churn_rate_min": 0.6166287591609806,
+      "churn_rate_max": 0.6774360299819074
+    },
+    {
+      "segment": "is_uk",
+      "title": "Country group",
+      "group": "Rest of the world",
+      "rows": 2062,
+      "churned": 1231,
+      "churn_rate": 0.5969932104752668,
+      "churn_rate_min": 0.575,
+      "churn_rate_max": 0.6253687315634219
+    },
+    {
+      "segment": "net_revenue_365d",
+      "title": "Net revenue in the past 12 months",
+      "group": "Under £300",
+      "rows": 6531,
+      "churned": 5569,
+      "churn_rate": 0.8527024957893126,
+      "churn_rate_min": 0.8266666666666667,
+      "churn_rate_max": 0.8773764258555133
+    },
+    {
+      "segment": "net_revenue_365d",
+      "title": "Net revenue in the past 12 months",
+      "group": "£300 to £1,000",
+      "rows": 9388,
+      "churned": 6930,
+      "churn_rate": 0.7381763953983809,
+      "churn_rate_min": 0.6947174447174447,
+      "churn_rate_max": 0.7755905511811023
+    },
+    {
+      "segment": "net_revenue_365d",
+      "title": "Net revenue in the past 12 months",
+      "group": "£1,000 to £5,000",
+      "rows": 8131,
+      "churned": 3691,
+      "churn_rate": 0.45394170458738164,
+      "churn_rate_min": 0.4091254752851711,
+      "churn_rate_max": 0.49163636363636365
+    },
+    {
+      "segment": "net_revenue_365d",
+      "title": "Net revenue in the past 12 months",
+      "group": "£5,000 and over",
+      "rows": 1497,
+      "churned": 235,
+      "churn_rate": 0.1569806279225117,
+      "churn_rate_min": 0.13524590163934427,
+      "churn_rate_max": 0.19367588932806323
+    },
+    {
+      "segment": "orders_365d",
+      "title": "Orders in the past year",
+      "group": "1",
+      "rows": 8913,
+      "churned": 7554,
+      "churn_rate": 0.8475260854930999,
+      "churn_rate_min": 0.8227040816326531,
+      "churn_rate_max": 0.8797736916548797
+    },
+    {
+      "segment": "orders_365d",
+      "title": "Orders in the past year",
+      "group": "2 to 4",
+      "rows": 10037,
+      "churned": 6868,
+      "churn_rate": 0.6842682076317624,
+      "churn_rate_min": 0.6367952522255192,
+      "churn_rate_max": 0.7172743574417214
+    },
+    {
+      "segment": "orders_365d",
+      "title": "Orders in the past year",
+      "group": "5 to 9",
+      "rows": 4447,
+      "churned": 1725,
+      "churn_rate": 0.38790195637508434,
+      "churn_rate_min": 0.34812760055478503,
+      "churn_rate_max": 0.42375168690958165
+    },
+    {
+      "segment": "orders_365d",
+      "title": "Orders in the past year",
+      "group": "10 or more",
+      "rows": 2150,
+      "churned": 278,
+      "churn_rate": 0.12930232558139534,
+      "churn_rate_min": 0.09620991253644315,
+      "churn_rate_max": 0.16348773841961853
+    },
+    {
+      "segment": "tenure_days",
+      "title": "Time since first purchase",
+      "group": "Under 180 days",
+      "rows": 7251,
+      "churned": 5373,
+      "churn_rate": 0.7410012412081092,
+      "churn_rate_min": 0.6837209302325581,
+      "churn_rate_max": 0.7792012057272042
+    },
+    {
+      "segment": "tenure_days",
+      "title": "Time since first purchase",
+      "group": "180 to 364 days",
+      "rows": 11005,
+      "churned": 7520,
+      "churn_rate": 0.6833257610177192,
+      "churn_rate_min": 0.6323417238749046,
+      "churn_rate_max": 0.7272727272727273
+    },
+    {
+      "segment": "tenure_days",
+      "title": "Time since first purchase",
+      "group": "365 days or more",
+      "rows": 7291,
+      "churned": 3532,
+      "churn_rate": 0.48443286243313677,
+      "churn_rate_min": 0.3595505617977528,
+      "churn_rate_max": 0.4941044357102751
+    }
+  ],
+  "segments_training_rows": 25547,
+  "test_scores_file": "results/c6_test_scores.csv"
+}

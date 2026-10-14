@@ -1,0 +1,14 @@
+segment,title,group,rows,churned,churn_rate,churn_rate_min,churn_rate_max
+is_uk,Country group,United Kingdom,23485,15194,0.646966,0.616629,0.677436
+is_uk,Country group,Rest of the world,2062,1231,0.596993,0.575000,0.625369
+net_revenue_365d,Net revenue in the past 12 months,Under £300,6531,5569,0.852702,0.826667,0.877376
+net_revenue_365d,Net revenue in the past 12 months,"£300 to £1,000",9388,6930,0.738176,0.694717,0.775591
+net_revenue_365d,Net revenue in the past 12 months,"£1,000 to £5,000",8131,3691,0.453942,0.409125,0.491636
+net_revenue_365d,Net revenue in the past 12 months,"£5,000 and over",1497,235,0.156981,0.135246,0.193676
+orders_365d,Orders in the past year,1,8913,7554,0.847526,0.822704,0.879774
+orders_365d,Orders in the past year,2 to 4,10037,6868,0.684268,0.636795,0.717274
+orders_365d,Orders in the past year,5 to 9,4447,1725,0.387902,0.348128,0.423752
+orders_365d,Orders in the past year,10 or more,2150,278,0.129302,0.096210,0.163488
+tenure_days,Time since first purchase,Under 180 days,7251,5373,0.741001,0.683721,0.779201
+tenure_days,Time since first purchase,180 to 364 days,11005,7520,0.683326,0.632342,0.727273
+tenure_days,Time since first purchase,365 days or more,7291,3532,0.484433,0.359551,0.494104

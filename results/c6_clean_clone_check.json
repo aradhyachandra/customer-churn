@@ -1,0 +1,220 @@
+{
+  "checked_on": "2026-10-14",
+  "clone_of_commit": "7d3f0b8d7f85ad7dbe56e398c1e01a191c8c3c37",
+  "overlay": "uncommitted C6 working-tree files copied over the clone (C6 not yet committed)",
+  "python": "3.13.5",
+  "raw_sha256_verified": "bcbe73b35f5b7babf197fb0cb983a11f5d9ff929078d4aa53d171b1f2df2e980",
+  "steps": [
+    {
+      "step": "run_c1",
+      "seconds": 25.58,
+      "peak_memory_mb": 978
+    },
+    {
+      "step": "run_c2",
+      "seconds": 11.59,
+      "peak_memory_mb": 536
+    },
+    {
+      "step": "run_c3",
+      "seconds": 5.98,
+      "peak_memory_mb": 722
+    },
+    {
+      "step": "run_c4",
+      "seconds": 37.96,
+      "peak_memory_mb": 270
+    },
+    {
+      "step": "render_c4_test",
+      "seconds": 1.84,
+      "peak_memory_mb": 237
+    },
+    {
+      "step": "run_c5",
+      "seconds": 9.75,
+      "peak_memory_mb": 253
+    },
+    {
+      "step": "run_c6",
+      "seconds": 1.91,
+      "peak_memory_mb": 272
+    }
+  ],
+  "run_c4_test_run": false,
+  "tests": {
+    "unit": "202 passed",
+    "realdata": "14 passed"
+  },
+  "models": {
+    "rule": {
+      "committed": "fb4b20b2141e5ae03cda465c77e86319369f4add32b0727ce9cc1b978ea1b1b2",
+      "clean_clone": "fb4b20b2141e5ae03cda465c77e86319369f4add32b0727ce9cc1b978ea1b1b2",
+      "match": true
+    },
+    "logistic": {
+      "committed": "ee966a7b80f743b1064b7cb2e79edc7447b583a97dc4e93cf9d53894fd3b3c22",
+      "clean_clone": "ee966a7b80f743b1064b7cb2e79edc7447b583a97dc4e93cf9d53894fd3b3c22",
+      "match": true
+    },
+    "gbm": {
+      "committed": "2dfb635d852d480ad6c617432bea012d0d85285847b0affa3a0dcfe52a3ff146",
+      "clean_clone": "2dfb635d852d480ad6c617432bea012d0d85285847b0affa3a0dcfe52a3ff146",
+      "match": true
+    }
+  },
+  "test_snapshot": {
+    "recorded": "56afd2c32cf14fba86aac7c64c4aec83d0b69bcbf143667932871d3544f71f4f",
+    "clean_clone": "56afd2c32cf14fba86aac7c64c4aec83d0b69bcbf143667932871d3544f71f4f",
+    "match": true
+  },
+  "results_files": [
+    {
+      "file": "c1_cleaning_report.json",
+      "status": "same_ignoring_run_info"
+    },
+    {
+      "file": "c2_churn_by_cutoff.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c2_churn_sensitivity.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c2_cohort_summary.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c2_cohorts_and_churn.json",
+      "status": "same_ignoring_run_info"
+    },
+    {
+      "file": "c2_retention_counts.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c2_retention_rates.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c3_feature_summary_training.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c3_features.json",
+      "status": "same_ignoring_run_info"
+    },
+    {
+      "file": "c4_final_models.json",
+      "status": "same_ignoring_run_info"
+    },
+    {
+      "file": "c4_test_metrics.json",
+      "status": "identical"
+    },
+    {
+      "file": "c4_test_summary.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c4_test_writeup.json",
+      "status": "same_ignoring_run_info"
+    },
+    {
+      "file": "c4_validation_calibration.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c4_validation_metrics.json",
+      "status": "same_ignoring_run_info"
+    },
+    {
+      "file": "c4_validation_summary.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c4_validation_tuning.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c5_business.json",
+      "status": "same_ignoring_run_info"
+    },
+    {
+      "file": "c5_campaign_curve.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c5_campaign_scenarios.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c5_driver_statements.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c5_drivers.json",
+      "status": "same_ignoring_run_info"
+    },
+    {
+      "file": "c5_partial_dependence.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c5_permutation_importance.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c6_predicted_vs_actual.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c6_report.json",
+      "status": "same_ignoring_run_info"
+    },
+    {
+      "file": "c6_segments_training.csv",
+      "status": "identical"
+    },
+    {
+      "file": "c6_test_scores.csv",
+      "status": "identical"
+    },
+    {
+      "file": "figures/c2_retention_heatmap.png",
+      "status": "identical"
+    },
+    {
+      "file": "figures/c4_test_calibration.png",
+      "status": "identical"
+    },
+    {
+      "file": "figures/c4_validation_calibration.png",
+      "status": "identical"
+    },
+    {
+      "file": "figures/c5_campaign_net_benefit.png",
+      "status": "identical"
+    },
+    {
+      "file": "figures/c5_partial_dependence.png",
+      "status": "identical"
+    },
+    {
+      "file": "figures/c5_permutation_importance.png",
+      "status": "identical"
+    },
+    {
+      "file": "figures/c6_predicted_vs_actual.png",
+      "status": "identical"
+    }
+  ],
+  "results_summary": {
+    "files": 35,
+    "match": 35,
+    "identical": 26,
+    "same_ignoring_run_info": 9
+  },
+  "docs": "docs/*.md and README.md differ only in their generated-at/git banner lines"
+}
