@@ -1,7 +1,7 @@
 # C5: What drives churn, and what we would have done on 2011-09-01
 
-*Generated from `results/c5_drivers.json` and `results/c5_business.json` on 2026-10-14T06:07:08+00:00
-(git a7cacc02fe590d210f65b312e5d27ec6dc553d23, uncommitted changes: True). Do not edit by hand;
+*Generated from `results/c5_drivers.json` and `results/c5_business.json` on 2026-10-14T06:13:31+00:00
+(git 5ddf02470b67e8f52d65cd54283dd57aab6df9fd, uncommitted changes: True). Do not edit by hand;
 edit `docs/templates/C5_drivers_and_business.md` and rerun `python -m churn.run_c5`.*
 
 ## What this step does, and what it does not touch
@@ -148,7 +148,7 @@ same statement does separate them.
 |---|---:|---|---|
 | Gross margin | 30.0% | 20%, 30%, 40% | Not in the data; PROJECT_PLAN.md Section 6 (TO VERIFY) |
 | Save rate (share of contacted would-be churners kept) | 10.0% | 5%, 10%, 20% | Not observable here; PROJECT_PLAN.md Section 6 (TO VERIFY) |
-| Offer cost per contacted customer | £15 | £5, £15, £40 | Judgement (TO VERIFY), see below |
+| Offer cost per contacted customer | £15 | £5, £15, £40 | Judgement, adopted by the author (not checked with a retailer), see below |
 | Customer value | trailing 12-month net revenue, floored at £0 | | `net_revenue_365d` |
 
 Offer cost: £15 is roughly a 5% discount on a typical order plus an emailed contact. The median

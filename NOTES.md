@@ -55,9 +55,6 @@
   50.5% at 09-01 (90). Consistent with the hypothesis, but churn was already drifting down over
   the training months and the data hold only one autumn with a full lookback, so trend and season
   cannot be separated.
-- **Offer cost (C5):** GBP 5 / 15 / 40 per contacted customer (config/business.yaml) are judgement
-  calls, not data. Central GBP 15 is about 5% of the median training order value (GBP 285) plus an
-  email, counted for every contacted customer. Check with the retailer.
 - **Margin and save rate (C5):** 30% (20-40%) and 10% (5/10/20%) as in the plan; not in the data.
 - **Customer value horizon (C5):** a kept customer is valued at 12 months of trailing net revenue,
   but "churned" only means no purchase in 90 days; some churners come back. Revenue at risk is
@@ -82,6 +79,11 @@
   equals orders_365d = 1). Ranks 4 and 5 are tied within noise. The spread is over shuffles only.
 
 ## Decisions
+
+- **Offer cost (C5, adopted by Aradhya 2026-10-14):** GBP 5 / 15 / 40 per contacted customer
+  (config/business.yaml). This is the author's judgement, not data: central GBP 15 is about 5% of the median
+  training order value (GBP 285) plus an email, counted for every contacted customer. It has not been
+  checked with a retailer.
 
 - **Sheet overlap (C1):** measured, not assumed. The overlap window is an exact copy in both sheets
   (see docs/C1_data_and_cleaning.md), so the later sheet's identical lines are dropped.

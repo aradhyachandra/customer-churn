@@ -38,8 +38,9 @@ offer_cost_gbp:
   central: 15
   scenarios: [5, 15, 40]
 offer_cost_gbp_rationale: >-
-  Cost per contacted customer, paid whether or not the customer would have churned. TO VERIFY,
-  not in the data. Central GBP 15: a discount of about 5% on a typical order (the median order
+  Cost per contacted customer, paid whether or not the customer would have churned. Not in the
+  data: proposed in C5 and adopted by Aradhya on 2026-10-14 as the author's judgement (not checked
+  with a retailer). Central GBP 15: a discount of about 5% on a typical order (the median order
   value at the training cutoffs is reported in docs/C5_drivers_and_business.md) plus an emailed
   contact, counted in full for every contacted customer (conservative: some never redeem it).
   Low GBP 5: an email with a small fixed voucher. High GBP 40: a 10% discount on a typical order

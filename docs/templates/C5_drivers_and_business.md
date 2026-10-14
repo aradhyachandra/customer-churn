@@ -99,7 +99,7 @@ same statement does separate them.
 |---|---:|---|---|
 | Gross margin | {{b.assumptions.margin.central|pct}} | 20%, 30%, 40% | Not in the data; PROJECT_PLAN.md Section 6 (TO VERIFY) |
 | Save rate (share of contacted would-be churners kept) | {{b.assumptions.save_rate.central|pct}} | 5%, 10%, 20% | Not observable here; PROJECT_PLAN.md Section 6 (TO VERIFY) |
-| Offer cost per contacted customer | £{{b.assumptions.offer_cost_gbp.central}} | £5, £15, £40 | Judgement (TO VERIFY), see below |
+| Offer cost per contacted customer | £{{b.assumptions.offer_cost_gbp.central}} | £5, £15, £40 | Judgement, adopted by the author (not checked with a retailer), see below |
 | Customer value | trailing 12-month net revenue, floored at £0 | | `net_revenue_365d` |
 
 Offer cost: £15 is roughly a 5% discount on a typical order plus an emailed contact. The median
